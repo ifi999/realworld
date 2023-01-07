@@ -6,7 +6,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -51,7 +50,7 @@ public class User extends BaseUpdateInfoEntity {
         this.email = email;
     }
 
-    public boolean isMatched(String password, String encodedPassword, PasswordEncoder passwordEncoder) {
+    public boolean isMatched(String password, String encodedPassword, UserPasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(password, encodedPassword);
     }
 }
