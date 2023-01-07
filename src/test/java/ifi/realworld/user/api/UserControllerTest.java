@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
 
-@Rollback(false)
 @Transactional
 @SpringBootTest
 class UserControllerTest {
@@ -21,19 +20,13 @@ class UserControllerTest {
     UserRepository userRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    UserPasswordEncoder passwordEncoder;
 
     @DisplayName("유저 등록")
     @Test
     public void createUser() {
         //given
-        User user = User.builder()
-                .email("test@rw.com")
-                .username("hi")
-                .password("1234")
-                .passwordEncoder(passwordEncoder)
-                .bio("가나다라")
-                .build();
+        User user = getUser();
 
         //when
         User result = userRepository.save(user);
@@ -41,6 +34,15 @@ class UserControllerTest {
         //then
         assertThat(user.getEmail()).isEqualTo(result.getEmail());
         assertThat(user.getUsername()).isEqualTo(result.getUsername());
+    }
+
+    private User getUser() {
+        return User.builder()
+                .email("test@rw.com")
+                .username("hi")
+                .password("1234")
+                .passwordEncoder(passwordEncoder)
+                .build();
     }
 
 }
