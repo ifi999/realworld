@@ -3,8 +3,8 @@ spring:
     active: test
   datasource:
     url: jdbc:h2:tcp://localhost/~/realworld
-    username: sa
-    password:
+    username: cp
+    password: young
     driver-class-name: org.h2.Driver
 
   jpa:
@@ -19,4 +19,4 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
-#    org.hibernate.type: trace
+#    org.hibernate.type: trace®
