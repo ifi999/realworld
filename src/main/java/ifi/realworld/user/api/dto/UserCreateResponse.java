@@ -22,7 +22,7 @@ public class UserCreateResponse {
         this.password = password;
     }
 
-    public static UserCreateResponse toEntity(User user) {
+    public static UserCreateResponse of(User user) {
         return UserCreateResponse.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
