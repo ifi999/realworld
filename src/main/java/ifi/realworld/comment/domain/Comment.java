@@ -18,6 +18,7 @@ public class Comment {
     @Column(name = "comment_id")
     private Long id;
 
+    @Column(length = 3000)
     private String body;
 
     @ManyToOne(fetch = FetchType.LAZY)

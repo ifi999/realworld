@@ -1,9 +1,13 @@
 package ifi.realworld.user.domain;
 
 import ifi.realworld.common.entity.BaseUpdateInfoEntity;
+import ifi.realworld.user.api.UserPasswordEncoder;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.Assert;
 
 import javax.persistence.*;
 
@@ -18,12 +22,36 @@ public class User extends BaseUpdateInfoEntity {
     @Column(name = "user_id")
     private Long id;
 
+    @Column(length = 255)
     private String username;
 
+    @Column(length = 255)
     private String password;
 
+    @Column(length = 255)
     private String email;
 
+    @Column(length = 255)
     private String bio;
 
+    @Column(length = 255)
+    private String image;
+
+    @Builder
+    public User(String username, String password, UserPasswordEncoder passwordEncoder, String email) {
+        Assert.notNull(username, "username must not be null.");
+        Assert.notNull(email, "email must not be null.");
+        if (passwordEncoder == null) {
+            throw new IllegalArgumentException("passwordEncoder is null");
+        }
+        Assert.notNull(password, "password must not be null.");
+
+        this.username = username;
+        this.password = passwordEncoder.encode(password);
+        this.email = email;
+    }
+
+    public boolean isMatched(String password, String encodedPassword, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(password, encodedPassword);
+    }
 }
