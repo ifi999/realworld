@@ -13,4 +13,16 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ErrorResponse(error);
     }
 
+    @ExceptionHandler(PasswordNotMatchedException.class)
+    public ErrorResponse handlePasswordNotMatchedException() {
+        ApiError error = new ApiError(ErrorCode.PASSWORD_NOT_MATCHED.toString());
+        return new ErrorResponse(error);
+    }
+
+    @ExceptionHandler(InvalidEmailException.class)
+    public ErrorResponse handleInvalidEmailException() {
+        ApiError error = new ApiError(ErrorCode.INVALID_EMAIL.toString());
+        return new ErrorResponse(error);
+    }
+
 }
