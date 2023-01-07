@@ -1,12 +1,8 @@
 package ifi.realworld.user.api;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-public interface UserPasswordEncoder extends PasswordEncoder {
-    @Override
+public interface UserPasswordEncoder {
     String encode(CharSequence rawPassword);
 
-    @Override
     boolean matches(CharSequence rawPassword, String encodedPassword);
 
 }
