@@ -32,7 +32,7 @@ public class Article extends BaseUpdateInfoEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private User author;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
 
 }
