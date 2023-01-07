@@ -2,6 +2,8 @@ package ifi.realworld.common.exception;
 
 public class AlreadyExistedUserException extends DefaultCustomException {
 
+    private static final long serialVersionUID = 7317961365126506972L;
+
     public AlreadyExistedUserException() {
         super();
     }
