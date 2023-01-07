@@ -1,6 +1,7 @@
 package ifi.realworld.common.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,15 +31,18 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
-
         UserDetails user = User.builder()
-                .passwordEncoder(encoder::encode)
+                .passwordEncoder(getPasswordEncoder()::encode)
                 .username("username")
                 .password("password")
                 .roles("USER") // TODO - 유저 권한 나누기?
                 .build();
 
         return new InMemoryUserDetailsManager(user);
+    }
+
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
