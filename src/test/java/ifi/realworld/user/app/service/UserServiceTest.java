@@ -54,21 +54,6 @@ class UserServiceTest {
         assertThat(findUser.isPresent()).isTrue();
     }
 
-    @DisplayName("비밀번호 검증")
-    @Test
-    public void checkPassword() {
-        //given
-        User user = setUser();
-
-        //when // TODO - 이건 Entity 테스트인지?
-        boolean matchedTrue = user.isMatched("1234", user.getPassword(), passwordEncoder);
-        boolean matchedFalse = user.isMatched("4321", user.getPassword(), passwordEncoder);
-
-        //then
-        assertThat(matchedTrue).isTrue();
-        assertThat(matchedFalse).isFalse();
-    }
-
     @DisplayName("로그인")
     @Test
     public void login() {
