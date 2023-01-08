@@ -4,13 +4,13 @@ import ifi.realworld.user.api.dto.UserCreateRequest;
 import ifi.realworld.user.api.dto.UserCreateResponse;
 import ifi.realworld.user.api.dto.UserLoginDto;
 import ifi.realworld.user.app.service.UserServiceImpl;
-import ifi.realworld.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -26,8 +26,8 @@ public class UserController {
     }
 
     @PostMapping("/users/login")
-    public UserLoginDto login(@RequestBody @Valid final UserLoginDto dto) {
-        return UserLoginDto.of(userService.login(dto));
+    public UserLoginDto login(@RequestBody @Valid final UserLoginDto dto, HttpServletResponse response) {
+        return UserLoginDto.of(userService.login(dto, response));
     }
 
 }

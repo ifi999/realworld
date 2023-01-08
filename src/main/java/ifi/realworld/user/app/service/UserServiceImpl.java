@@ -2,7 +2,7 @@ package ifi.realworld.user.app.service;
 
 import ifi.realworld.common.exception.AlreadyExistedUserException;
 import ifi.realworld.common.exception.InvalidEmailException;
-import ifi.realworld.common.exception.PasswordNotMatchedException;
+import ifi.realworld.common.security.JwtProvider;
 import ifi.realworld.user.api.UserPasswordEncoder;
 import ifi.realworld.user.api.dto.UserCreateRequest;
 import ifi.realworld.user.api.dto.UserLoginDto;
@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
@@ -20,8 +22,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
     private final UserPasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
 
     @Override
     public User createUser(UserCreateRequest dto) {
@@ -41,18 +43,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(UserLoginDto dto) {
-        Optional<User> findByEmail = userRepository.findByEmail(dto.getEmail());
-        if (findByEmail.isEmpty()) {
+    public User login(UserLoginDto dto, HttpServletResponse response) {
+        Optional<User> findUser = userRepository.findByEmail(dto.getEmail());
+        if (findUser.isEmpty()) {
             throw new InvalidEmailException(dto.getEmail());
         }
 
-        User findUserByEmail = findByEmail.get();
-        boolean matched = findUserByEmail.isMatched(dto.getPassword(), findUserByEmail.getPassword(), passwordEncoder);
-        if (!matched) {
-            throw new PasswordNotMatchedException(dto.getEmail());
-        }
+        User user = findUser.get();
+        user.isMatched(dto.getPassword(), user.getPassword(), passwordEncoder);
 
-        return findUserByEmail;
+        saveTokenInCookie(response, jwtProvider.createToken(user.getEmail()));
+
+        return user;
+    }
+
+    private static void saveTokenInCookie(HttpServletResponse response, String token) {
+        Cookie cookie = new Cookie("AccessToken", token);
+        cookie.setMaxAge(60*60*24);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
     }
 }
