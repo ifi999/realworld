@@ -24,23 +24,18 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.GET, "/api/profiles/**", "/api/articles/**", "/api/tags").permitAll()
                         .anyRequest().authenticated()
                 .and()
+                    .headers()
+                        .frameOptions().sameOrigin()
+                .and()
                     .csrf().disable()
                     .formLogin().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//                .and() // TODO - jwt 설정 필요
+//                .exceptionHandling()
+//                .authenticationEntryPoint()
+//                .accessDeniedHandler();
 
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .passwordEncoder(getPasswordEncoder()::encode)
-                .username("username")
-                .password("password")
-                .roles("USER") // TODO - 유저 권한 나누기?
-                .build();
-
-        return new InMemoryUserDetailsManager(user);
     }
 
     @Bean
