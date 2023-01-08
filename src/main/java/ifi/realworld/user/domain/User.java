@@ -1,6 +1,7 @@
 package ifi.realworld.user.domain;
 
 import ifi.realworld.common.entity.BaseUpdateInfoEntity;
+import ifi.realworld.common.exception.PasswordNotMatchedException;
 import ifi.realworld.user.api.UserPasswordEncoder;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,13 +22,13 @@ public class User extends BaseUpdateInfoEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(length = 255)
+    @Column(length = 255, nullable = false)
     private String username;
 
-    @Column(length = 255)
+    @Column(length = 255, nullable = false)
     private String password;
 
-    @Column(length = 255)
+    @Column(length = 255, unique = true, nullable = false)
     private String email;
 
     @Column(length = 255)
@@ -46,11 +47,18 @@ public class User extends BaseUpdateInfoEntity {
         Assert.notNull(password, "password must not be null.");
 
         this.username = username;
-        this.password = passwordEncoder.encode(password);
+        this.password = encodePassword(password, passwordEncoder);
         this.email = email;
     }
 
-    public boolean isMatched(String password, String encodedPassword, UserPasswordEncoder passwordEncoder) {
-        return passwordEncoder.matches(password, encodedPassword);
+    private static String encodePassword(String password, UserPasswordEncoder passwordEncoder) {
+        return passwordEncoder.encode(password);
+    }
+
+    public void isMatched(String password, String encodedPassword, UserPasswordEncoder passwordEncoder) {
+        boolean matched = passwordEncoder.matches(password, encodedPassword);
+        if (!matched) {
+            throw new PasswordNotMatchedException(this.getEmail());
+        }
     }
 }
