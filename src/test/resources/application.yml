@@ -20,3 +20,9 @@ logging:
   level:
     org.hibernate.SQL: debug
 #    org.hibernate.type: trace®
+
+# secret key 변경하기
+jwt:
+  header: Authorization
+  secret: aWZpOTk5UmVhbF9Xb3JsZCRKd3QzU2VjcmV0XktleUA1cw==
+  validity-in-seconds: 300
