@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DefaultUserPasswordEncoder implements UserPasswordEncoder {
+public class CustomUserPasswordEncoder implements UserPasswordEncoder {
 
     private final PasswordEncoder passwordEncoder;
 
