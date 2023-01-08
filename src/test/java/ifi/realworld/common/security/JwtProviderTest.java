@@ -63,14 +63,15 @@ class JwtProviderTest {
     }
 
     private String getJws() {
-        Date expiration = new Date(System.currentTimeMillis() + this.validityMilliSeconds);
+        Date now = new Date();
+        Date expiration = new Date(now.getTime() + this.validityMilliSeconds);
 
         Map<String, Object> headerMap = new HashMap<>();
         headerMap.put("typ", "JWT");
         headerMap.put("alg", "HS256");
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("email", "test@rw.com"); // 실제로는 HttpServletRequest에서 값 가져와야함
+        claims.put("email", "test@rw.com");
         claims.put("username", "h1");
 
         String jws = Jwts.builder()
@@ -78,6 +79,7 @@ class JwtProviderTest {
                 .setHeader(headerMap)
                 .setClaims(claims)
                 .signWith(key, signatureAlgorithm)
+                .setIssuedAt(now)
                 .setExpiration(expiration)
                 .compact();
         return jws;
