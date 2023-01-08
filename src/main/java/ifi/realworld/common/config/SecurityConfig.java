@@ -1,20 +1,29 @@
 package ifi.realworld.common.config;
 
+import ifi.realworld.common.security.JwtAccessDeniedHandler;
+import ifi.realworld.common.security.JwtAuthenticationEntryPoint;
+import ifi.realworld.common.security.JwtFilterConfigurer;
+import ifi.realworld.common.security.JwtProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtProvider jwtProvider;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -24,18 +33,37 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.GET, "/api/profiles/**", "/api/articles/**", "/api/tags").permitAll()
                         .anyRequest().authenticated()
                 .and()
-                    .headers()
-                        .frameOptions().sameOrigin()
+                    .headers().frameOptions().sameOrigin()
                 .and()
+                    .httpBasic().disable()
                     .csrf().disable()
-                    .formLogin().disable()
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//                .and() // TODO - jwt 설정 필요
-//                .exceptionHandling()
-//                .authenticationEntryPoint()
-//                .accessDeniedHandler();
+                    .cors()
+                .and()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                    .exceptionHandling()
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                        .accessDeniedHandler(jwtAccessDeniedHandler)
+                .and()
+                    .apply(new JwtFilterConfigurer(jwtProvider));
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        // TODO - 값 설정하기
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 
     @Bean
