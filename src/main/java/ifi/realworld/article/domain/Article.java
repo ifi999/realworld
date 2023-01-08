@@ -21,16 +21,16 @@ public class Article extends BaseUpdateInfoEntity {
     @Column(name = "article_id")
     private Long id;
 
-    @Column(length = 255)
+    @Column(length = 255, nullable = false)
     private String slug;
 
-    @Column(length = 255)
+    @Column(length = 255, nullable = false)
     private String title;
 
     @Column(length = 255)
     private String description;
 
-    @Column(length = 3000)
+    @Column(length = 3000, nullable = false)
     private String body;
 
     @OneToOne(fetch = FetchType.LAZY)
