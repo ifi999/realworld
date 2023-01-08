@@ -1,4 +1,4 @@
-package ifi.realworld.user.app.service;
+package ifi.realworld.common.security;
 
 import ifi.realworld.user.domain.User;
 import ifi.realworld.user.domain.repository.UserRepository;
@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email + " not found."));
+        final User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email + " not found."));
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
