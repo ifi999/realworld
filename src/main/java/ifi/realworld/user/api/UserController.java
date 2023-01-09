@@ -29,10 +29,10 @@ public class UserController {
         return UserLoginDto.of(userService.login(dto, response));
     }
 
-    @GetMapping("/user/{id}")
-    public UserInfoDto getCurrentUser(@PathVariable("id") final long id) {
+    @GetMapping("/user")
+    public UserInfoDto getCurrentUser() {
         // TODO - autoincrement 값 노출안되게 처리하고싶은데
-        return UserInfoDto.of(userService.getUserInfo(id));
+        return UserInfoDto.of(userService.getCurrentUserInfo());
     }
 
 }

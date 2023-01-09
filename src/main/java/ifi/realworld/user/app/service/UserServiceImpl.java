@@ -2,7 +2,7 @@ package ifi.realworld.user.app.service;
 
 import ifi.realworld.common.exception.AlreadyExistedUserException;
 import ifi.realworld.common.exception.InvalidEmailException;
-import ifi.realworld.common.exception.UserIdNotFoundException;
+import ifi.realworld.common.exception.UserNotFoundException;
 import ifi.realworld.common.security.JwtProvider;
 import ifi.realworld.user.api.UserPasswordEncoder;
 import ifi.realworld.user.api.dto.UserCreateRequest;
@@ -10,6 +10,9 @@ import ifi.realworld.user.api.dto.UserLoginDto;
 import ifi.realworld.user.domain.User;
 import ifi.realworld.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,11 +60,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserInfo(long id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserIdNotFoundException());
+    public User getCurrentUserInfo() {
+        UserDetails userDetails = getCurrentUserDetails();
+        String email = userDetails.getUsername();
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email + "not found."));
     }
 
-    public void createToken(User user, HttpServletResponse response) {
+    private UserDetails getCurrentUserDetails() {
+        SecurityContext securityContext = new SecurityContextImpl();
+        UserDetails userDetails = (UserDetails) securityContext.getAuthentication().getPrincipal();
+        return userDetails;
+    }
+
+    private void createToken(User user, HttpServletResponse response) {
         final String token = jwtProvider.createToken(user.getEmail());
         saveTokenInCookie(response, token);
     }

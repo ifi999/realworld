@@ -12,6 +12,6 @@ public interface UserService {
 
     User login(UserLoginDto dto, HttpServletResponse response);
 
-    User getUserInfo(long id);
+    User getCurrentUserInfo();
 
 }
