@@ -27,7 +27,7 @@ public class JwtProvider {
     private final Key key;
     private final long validityMilliSeconds;
     private final CustomUserDetailsService userDetailsService;
-    private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+    private final SignatureAlgorithm signatureAlgorithm;
 
     public JwtProvider(
             @Value("${jwt.secret}") String secret
@@ -38,6 +38,7 @@ public class JwtProvider {
         this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
         this.validityMilliSeconds = validityMilliSeconds * 1000L;
         this.userDetailsService = userDetailsService;
+        this.signatureAlgorithm = SignatureAlgorithm.HS256;
     }
 
     public String createToken(String email) {
