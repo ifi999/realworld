@@ -1,19 +1,21 @@
 package ifi.realworld.user.domain;
 
 import ifi.realworld.common.entity.BaseUpdateInfoEntity;
-import ifi.realworld.common.exception.PasswordNotMatchedException;
 import ifi.realworld.user.api.UserPasswordEncoder;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
 @Table(name = "users")
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseUpdateInfoEntity {
 
@@ -49,18 +51,30 @@ public class User extends BaseUpdateInfoEntity {
         Assert.notNull(password, "password must not be null.");
 
         this.username = username;
-        this.password = encodePassword(password, passwordEncoder);
+        this.password = this.encodePassword(password, passwordEncoder);
         this.email = email;
     }
 
-    private static String encodePassword(String password, UserPasswordEncoder passwordEncoder) {
+    private String encodePassword(String password, UserPasswordEncoder passwordEncoder) {
         return passwordEncoder.encode(password);
     }
 
-    public void isMatched(String password, String encodedPassword, UserPasswordEncoder passwordEncoder) {
+    public boolean isMatched(String password, String encodedPassword, UserPasswordEncoder passwordEncoder) {
         boolean matched = passwordEncoder.matches(password, encodedPassword);
         if (!matched) {
-            throw new PasswordNotMatchedException(this.getEmail());
+            return false;
+        }
+        return true;
+    }
+
+    public void updateInfo(String username, String email, String password, UserPasswordEncoder passwordEncoder, String bio, String image) {
+        this.username = username != null ? username : this.username;
+        this.email = email != null ? email : this.email;
+        this.bio = bio;
+        this.image = image;
+
+        if(StringUtils.hasText(password) && !isMatched(password, this.getPassword(), passwordEncoder)) {
+            this.password = this.encodePassword(password, passwordEncoder);
         }
     }
 }
