@@ -90,6 +90,8 @@ public class JwtProvider {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+            // TODO - jwt가 만료되었다면 갱신? 갱신을 해도 여기가 맞는지
+            // refresh token가 있다면 -> refresh token이 만료되지 않았을 경우 access token을 갱신하는 식?
             return !claims.getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             // TODO - JwtException 종류 및 처리 알아보기
