@@ -11,4 +11,7 @@ public interface UserService {
     User createUser(UserCreateRequest dto);
 
     User login(UserLoginDto dto, HttpServletResponse response);
+
+    User getUserInfo(long id);
+
 }

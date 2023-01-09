@@ -2,6 +2,7 @@ package ifi.realworld.user.app.service;
 
 import ifi.realworld.common.exception.AlreadyExistedUserException;
 import ifi.realworld.common.exception.InvalidEmailException;
+import ifi.realworld.common.exception.UserIdNotFoundException;
 import ifi.realworld.common.security.JwtProvider;
 import ifi.realworld.user.api.UserPasswordEncoder;
 import ifi.realworld.user.api.dto.UserCreateRequest;
@@ -46,18 +47,26 @@ public class UserServiceImpl implements UserService {
     public User login(UserLoginDto dto, HttpServletResponse response) {
         Optional<User> findUser = userRepository.findByEmail(dto.getEmail());
         if (findUser.isEmpty()) {
-            throw new InvalidEmailException(dto.getEmail());
+            throw new InvalidEmailException("Invalid " + dto.getEmail() + ".");
         }
 
         User user = findUser.get();
         user.isMatched(dto.getPassword(), user.getPassword(), passwordEncoder);
-
-        saveTokenInCookie(response, jwtProvider.createToken(user.getEmail()));
-
+        createToken(user, response);
         return user;
     }
 
-    private static void saveTokenInCookie(HttpServletResponse response, String token) {
+    @Override
+    public User getUserInfo(long id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserIdNotFoundException());
+    }
+
+    public void createToken(User user, HttpServletResponse response) {
+        final String token = jwtProvider.createToken(user.getEmail());
+        saveTokenInCookie(response, token);
+    }
+
+    private void saveTokenInCookie(HttpServletResponse response, String token) {
         Cookie cookie = new Cookie("AccessToken", token);
         cookie.setMaxAge(60*60*24);
         cookie.setPath("/");
