@@ -16,6 +16,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Article extends BaseUpdateInfoEntity {
 
+    private static final long serialVersionUID = -560518392611816483L;
+
     @Id
     @GeneratedValue
     @Column(name = "article_id")

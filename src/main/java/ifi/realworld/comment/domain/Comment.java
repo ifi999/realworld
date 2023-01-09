@@ -1,6 +1,7 @@
 package ifi.realworld.comment.domain;
 
 import ifi.realworld.article.domain.Article;
+import ifi.realworld.common.entity.BaseUpdateInfoEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "comments")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment {
+public class Comment extends BaseUpdateInfoEntity {
+
+    private static final long serialVersionUID = -7223512392625279021L;
 
     @Id
     @GeneratedValue

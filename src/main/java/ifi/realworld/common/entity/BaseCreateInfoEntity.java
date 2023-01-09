@@ -16,8 +16,6 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseCreateInfoEntity implements Serializable {
 
-    private static final long serialVersionUID = -4575268096250943411L;
-
     @CreatedBy
     @Column(updatable = false)
     private Long createdBy;

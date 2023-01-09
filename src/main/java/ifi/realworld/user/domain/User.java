@@ -17,6 +17,8 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseUpdateInfoEntity {
 
+    private static final long serialVersionUID = 3144631761026005885L;
+
     @Id
     @GeneratedValue
     @Column(name = "user_id")

@@ -13,6 +13,8 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ArticleTag extends BaseCreateInfoEntity {
 
+    private static final long serialVersionUID = -1795508465588638085L;
+
     @Id
     @GeneratedValue
     @Column(name = "article_tag_id")

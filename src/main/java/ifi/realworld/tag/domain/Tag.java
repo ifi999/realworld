@@ -15,6 +15,7 @@ import javax.persistence.Id;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Tag extends BaseCreateInfoEntity {
 
+    private static final long serialVersionUID = -8744880418545929863L;
 
     @Id
     @GeneratedValue
