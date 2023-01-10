@@ -13,6 +13,7 @@ import ifi.realworld.user.api.dto.UserUpdateRequest;
 import ifi.realworld.user.domain.User;
 import ifi.realworld.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -57,7 +59,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidEmailException("Invalid " + dto.getEmail() + ".");
         }
 
-        User user = findUser.orElseThrow(() -> new UserNotFoundException(dto.getEmail() + "not found."));
+        User user = findUser.orElseThrow(() -> new UserNotFoundException(dto.getEmail() + " not found."));
         boolean matched = user.isMatched(dto.getPassword(), user.getPassword(), passwordEncoder);
         if (!matched) {
             throw new PasswordNotMatchedException(user.getEmail());
@@ -73,9 +75,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private User getCurrentUser() {
-        UserDetails userDetails = getCurrentUserDetails();
+        UserDetails userDetails = customUserDetailsService.getCurrentUserDetails();
         String email = userDetails.getUsername();
-        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email + "not found."));
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email + " not found."));
     }
 
     @Override
@@ -103,11 +105,6 @@ public class UserServiceImpl implements UserService {
         UserDetails userDetails = customUserDetailsService.loadUserById(user.getId());
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, "", Collections.emptyList()));
         this.createToken(user, response);
-    }
-
-    private UserDetails getCurrentUserDetails() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userDetails;
     }
 
     private void createToken(User user, HttpServletResponse response) {
