@@ -2,6 +2,7 @@ package ifi.realworld.user.app.service;
 
 import ifi.realworld.common.security.CustomUserDetailsService;
 import ifi.realworld.user.api.UserPasswordEncoder;
+import ifi.realworld.user.domain.FollowRelation;
 import ifi.realworld.user.domain.repository.FollowRepository;
 import ifi.realworld.user.domain.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -37,6 +38,22 @@ class ProfileServiceTest {
 
         //then
         assertThat(followed).isFalse();
+    }
+
+    @DisplayName("팔로우")
+    @Test
+    public void followUser() {
+        //given
+        Long followerId = 1L;
+        Long followeeId = 2L;
+        FollowRelation followRelation = new FollowRelation(followerId, followeeId);
+
+        //when
+        FollowRelation save = followRepository.save(followRelation);
+
+        //then
+        assertThat(save.getFollowRelationId().getFollowerId()).isEqualTo(followerId);
+        assertThat(save.getFollowRelationId().getFolloweeId()).isEqualTo(followeeId);
     }
 
 }
