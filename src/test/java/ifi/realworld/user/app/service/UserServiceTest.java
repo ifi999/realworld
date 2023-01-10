@@ -49,7 +49,7 @@ class UserServiceTest {
         em.clear();
 
         //when
-        Optional<User> findUser = userRepository.findByEmailAndUsername("rw@hel.lo", "회원");
+        Optional<User> findUser = userRepository.findByEmailOrUsername("rw@hel.lo", "회원");
 
         //then
         assertThat(findUser.isPresent()).isTrue();
@@ -135,6 +135,8 @@ class UserServiceTest {
 
         //then
         assertThat(user.getUsername()).isNotEqualTo("회원");
+        assertThat(user.getBio()).isNull();
+        assertThat(user.getImage()).isEqualTo("이미지수정");
     }
 
 }
