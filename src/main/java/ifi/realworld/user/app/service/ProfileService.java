@@ -7,4 +7,5 @@ public interface ProfileService {
 
     Pair<User, Boolean> getProfile(String username);
 
+    Pair<User, Boolean> followUser(String username);
 }
