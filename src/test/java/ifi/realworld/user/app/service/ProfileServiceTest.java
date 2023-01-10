@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -25,6 +27,8 @@ class ProfileServiceTest {
     FollowRepository followRepository;
     @Autowired
     UserPasswordEncoder passwordEncoder;
+    @Autowired
+    EntityManager em;
 
     @DisplayName("프로필 조회")
     @Test
@@ -54,6 +58,29 @@ class ProfileServiceTest {
         //then
         assertThat(save.getFollowRelationId().getFollowerId()).isEqualTo(followerId);
         assertThat(save.getFollowRelationId().getFolloweeId()).isEqualTo(followeeId);
+    }
+
+    @DisplayName("언팔로우")
+    @Test
+    public void unFollowUser() {
+        //given
+        long followerId = 1L;
+        long followeeId = 2L;
+        setFollowRelation(followerId, followeeId);
+        em.flush();
+        em.clear();
+
+        //when
+        followRepository.deleteByFollowRelationIdFollowerIdAndFollowRelationIdFolloweeId(followerId, followeeId);
+
+        //then
+        boolean followed = followRepository.existsByFollowRelationIdFollowerIdAndFollowRelationIdFolloweeId(followerId, followeeId);
+        assertThat(followed).isFalse();
+    }
+
+    private void setFollowRelation(long followerId, long followeeId) {
+        FollowRelation followRelation = new FollowRelation(followerId, followeeId);
+        FollowRelation save = followRepository.save(followRelation);
     }
 
 }
