@@ -16,10 +16,6 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseCreateInfoEntity implements Serializable {
 
-    @CreatedBy
-    @Column(updatable = false)
-    private Long createdBy;
-
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
