@@ -84,7 +84,7 @@ class UserServiceTest {
         em.clear();
 
         //when
-        User findUser = userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new UserNotFoundException(user.getEmail() + "not found."));
+        User findUser = userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new UserNotFoundException(user.getEmail() + " not found."));
 
         //then
         assertThat(findUser.getId()).isEqualTo(user.getId());
@@ -115,7 +115,7 @@ class UserServiceTest {
 //        String email = userDetails.getUsername();
 
         //when
-//        userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email + "not found."));
+//        userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email + " not found."));
 
         //then
     }
