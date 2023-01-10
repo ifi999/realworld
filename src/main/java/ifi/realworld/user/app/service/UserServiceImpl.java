@@ -74,12 +74,6 @@ public class UserServiceImpl implements UserService {
         return getCurrentUser();
     }
 
-    private User getCurrentUser() {
-        UserDetails userDetails = customUserDetailsService.getCurrentUserDetails();
-        String email = userDetails.getUsername();
-        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email + " not found."));
-    }
-
     @Override
     public User updateUser(UserUpdateRequest dto, HttpServletResponse response) {
         Optional<User> findEmail = userRepository.findByEmailOrUsername(dto.getEmail(), dto.getUsername());
@@ -101,6 +95,12 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    private User getCurrentUser() {
+        UserDetails userDetails = customUserDetailsService.getCurrentUserDetails();
+        String email = userDetails.getUsername();
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email + " not found."));
+    }
+
     public void createNewAuthentication(User user, HttpServletResponse response) {
         UserDetails userDetails = customUserDetailsService.loadUserById(user.getId());
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, "", Collections.emptyList()));
@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
 
     private void createToken(User user, HttpServletResponse response) {
         final String token = jwtProvider.createToken(user.getEmail());
-        saveTokenInCookie(token, response);
+        this.saveTokenInCookie(token, response);
     }
 
     private void saveTokenInCookie(String token, HttpServletResponse response) {

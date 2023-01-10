@@ -24,4 +24,9 @@ public class ProfileController {
         return ProfileDto.of(profileService.followUser(username));
     }
 
+    @DeleteMapping("/{username}/follow")
+    public ProfileDto unFollowUser(@PathVariable String username) {
+        return ProfileDto.of(profileService.unFollowUser(username));
+    }
+
 }

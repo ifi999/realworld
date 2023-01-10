@@ -39,6 +39,14 @@ public class ProfileServiceImpl implements ProfileService {
         return Pair.of(findUser, true);
     }
 
+    @Override
+    public Pair<User, Boolean> unFollowUser(String username) {
+        User currentUser = getCurrentUser(username);
+        User findUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username + " not found."));
+        followRepository.deleteByFollowRelationIdFollowerIdAndFollowRelationIdFolloweeId(currentUser.getId(), findUser.getId());
+        return Pair.of(findUser, false);
+    }
+
     private User getCurrentUser(String username) {
         String currentUserEmail = getCurrentUserEmail();
         User currentUser = userRepository.findByEmail(currentUserEmail).orElseThrow(() -> new UserNotFoundException(currentUserEmail + " not found."));
