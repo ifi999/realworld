@@ -4,6 +4,8 @@ import ifi.realworld.user.domain.User;
 import ifi.realworld.user.domain.repository.UserRepository;
 import io.jsonwebtoken.security.SecurityException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,10 +40,19 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public static UserDetails getCurrentUserDetails() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication authentication = getAuthentication();
+        Object principal = authentication.getPrincipal();
         if (!principal.equals("anonymousUser")) {
             return (UserDetails) principal;
         }
-        throw new SecurityException("may be invalid JWT or not authenticated user.");
+        throw new SecurityException("May be invalid JWT or not authenticated user.");
+    }
+
+    public static Authentication getAuthentication() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new AuthenticationServiceException("Not authenticated user.");
+        }
+        return authentication;
     }
 }
