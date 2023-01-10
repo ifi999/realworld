@@ -74,6 +74,9 @@ public class User extends BaseUpdateInfoEntity {
         this.image = image;
 
         if(StringUtils.hasText(password) && !isMatched(password, this.getPassword(), passwordEncoder)) {
+            if (passwordEncoder == null) {
+                throw new IllegalArgumentException("passwordEncoder is null");
+            }
             this.password = this.encodePassword(password, passwordEncoder);
         }
     }
