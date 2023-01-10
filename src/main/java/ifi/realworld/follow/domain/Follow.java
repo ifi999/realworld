@@ -1,4 +1,4 @@
-package ifi.realworld.favorite.domain;
+package ifi.realworld.follow.domain;
 
 import ifi.realworld.user.domain.User;
 import lombok.AccessLevel;
@@ -10,14 +10,14 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Favorite {
+public class Follow {
 
     @Id
     @GeneratedValue
-    @Column(name = "favorite_id")
+    @Column(name = "follow_id")
     private Long id;
 
-    private FavoriteType type;
+    private FollowType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User follower_id;
