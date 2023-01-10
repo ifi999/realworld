@@ -2,9 +2,11 @@ package ifi.realworld.user.api.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 @Getter
+@NoArgsConstructor
 public class UserUpdateRequest {
 
     @Length(max = 255)
