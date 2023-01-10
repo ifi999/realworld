@@ -1,5 +1,6 @@
-package ifi.realworld.follow.domain;
+package ifi.realworld.favorite.domain;
 
+import ifi.realworld.article.domain.Article;
 import ifi.realworld.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,18 +11,19 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Follow {
+public class Favorite {
 
     @Id
     @GeneratedValue
-    @Column(name = "follow_id")
+    @Column(name = "favorite_id")
     private Long id;
 
-    private FollowType type;
+    private FavoriteType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User follower_id;
+    private User userId;
 
-    // TODO - followee는 article, user 둘 다 대상인데 어떻게?
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Article articleId;
 
 }
