@@ -26,7 +26,7 @@ public class User extends BaseUpdateInfoEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 255, unique = true, nullable = false)
     private String username;
 
     @Column(length = 255, nullable = false)

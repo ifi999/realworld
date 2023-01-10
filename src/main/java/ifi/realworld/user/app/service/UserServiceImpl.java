@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(UserCreateRequest dto) {
-        Optional<User> checkDuplicatedUser = userRepository.findByEmailAndUsername(dto.getEmail(), dto.getUsername());
+        Optional<User> checkDuplicatedUser = userRepository.findByEmailOrUsername(dto.getEmail(), dto.getUsername());
         if (checkDuplicatedUser.isPresent()) {
             throw new AlreadyExistedUserException(dto.getEmail());
         }
@@ -80,9 +80,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(UserUpdateRequest dto, HttpServletResponse response) {
-        Optional<User> findEmail = userRepository.findByEmail(dto.getEmail());
+        Optional<User> findEmail = userRepository.findByEmailOrUsername(dto.getEmail(), dto.getUsername());
         if (findEmail.isPresent()) {
-            throw new AlreadyExistedUserException(dto.getEmail());
+            throw new AlreadyExistedUserException("Email or Name");
         }
         User currentUser = getCurrentUser();
         User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> new UserNotFoundException("User ID : " + currentUser.getId() + " not found."));
