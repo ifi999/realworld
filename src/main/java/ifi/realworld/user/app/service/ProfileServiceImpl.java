@@ -4,6 +4,7 @@ import ifi.realworld.common.exception.UserNotFoundException;
 import ifi.realworld.common.security.CustomUserDetailsService;
 import ifi.realworld.user.domain.FollowRelation;
 import ifi.realworld.user.domain.User;
+import ifi.realworld.user.domain.repository.FollowJpaRepository;
 import ifi.realworld.user.domain.repository.FollowRepository;
 import ifi.realworld.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +22,13 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
+    private final FollowJpaRepository followJpaRepository;
 
     @Override
     public Pair<User, Boolean> getProfile(String username) {
         User currentUser = getCurrentUser(username);
         User findUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username + " not found."));
-        boolean followed = followRepository.existsByFollowRelationIdFollowerIdAndFollowRelationIdFolloweeId(currentUser.getId(), findUser.getId());
+        boolean followed = followJpaRepository.isFollow(currentUser.getId(), findUser.getId());
         return Pair.of(findUser, followed);
     }
 
@@ -43,7 +45,7 @@ public class ProfileServiceImpl implements ProfileService {
     public Pair<User, Boolean> unFollowUser(String username) {
         User currentUser = getCurrentUser(username);
         User findUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username + " not found."));
-        followRepository.deleteByFollowRelationIdFollowerIdAndFollowRelationIdFolloweeId(currentUser.getId(), findUser.getId());
+        followJpaRepository.unFollow(currentUser.getId(), findUser.getId());
         return Pair.of(findUser, false);
     }
 
