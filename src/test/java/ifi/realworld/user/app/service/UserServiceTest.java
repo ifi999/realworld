@@ -127,7 +127,7 @@ class UserServiceTest {
         User user = setUser();
 
         //when
-        user.updateInfo(
+        user.changeInfo(
                 "유저이름수정", "email수정",
                 null, passwordEncoder,
                 null, "이미지수정"

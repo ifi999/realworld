@@ -3,6 +3,7 @@ package ifi.realworld.user.app.service;
 import ifi.realworld.common.security.CustomUserDetailsService;
 import ifi.realworld.user.api.UserPasswordEncoder;
 import ifi.realworld.user.domain.FollowRelation;
+import ifi.realworld.user.domain.repository.FollowJpaRepository;
 import ifi.realworld.user.domain.repository.FollowRepository;
 import ifi.realworld.user.domain.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -26,23 +27,11 @@ class ProfileServiceTest {
     @Autowired
     FollowRepository followRepository;
     @Autowired
+    FollowJpaRepository followJpaRepository;
+    @Autowired
     UserPasswordEncoder passwordEncoder;
     @Autowired
     EntityManager em;
-
-    @DisplayName("프로필 조회")
-    @Test
-    public void getProfile() {
-        //given
-        Long followerId = 1L;
-        Long followeeId = 2L;
-
-        //when
-        boolean followed = followRepository.existsByFollowRelationIdFollowerIdAndFollowRelationIdFolloweeId(followerId, followeeId);
-
-        //then
-        assertThat(followed).isFalse();
-    }
 
     @DisplayName("팔로우")
     @Test
@@ -71,10 +60,10 @@ class ProfileServiceTest {
         em.clear();
 
         //when
-        followRepository.deleteByFollowRelationIdFollowerIdAndFollowRelationIdFolloweeId(followerId, followeeId);
+        followJpaRepository.unFollow(followerId, followeeId);
 
         //then
-        boolean followed = followRepository.existsByFollowRelationIdFollowerIdAndFollowRelationIdFolloweeId(followerId, followeeId);
+        boolean followed = followJpaRepository.isFollow(followerId, followeeId);
         assertThat(followed).isFalse();
     }
 
