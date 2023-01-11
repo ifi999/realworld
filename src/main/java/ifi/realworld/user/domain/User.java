@@ -67,7 +67,7 @@ public class User extends BaseUpdateInfoEntity {
         return true;
     }
 
-    public void updateInfo(String username, String email, String password, UserPasswordEncoder passwordEncoder, String bio, String image) {
+    public void changeInfo(String username, String email, String password, UserPasswordEncoder passwordEncoder, String bio, String image) {
         this.username = username != null ? username : this.username;
         this.email = email != null ? email : this.email;
         this.bio = bio;
