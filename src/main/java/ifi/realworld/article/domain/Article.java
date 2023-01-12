@@ -4,6 +4,7 @@ import ifi.realworld.comment.domain.Comment;
 import ifi.realworld.common.entity.BaseUpdateInfoEntity;
 import ifi.realworld.user.domain.User;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,13 +24,13 @@ public class Article extends BaseUpdateInfoEntity {
     @Column(name = "article_id")
     private Long id;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 255)
     private String slug;
 
     @Column(length = 255, nullable = false)
     private String title;
 
-    @Column(length = 255)
+    @Column(length = 255, nullable = false)
     private String description;
 
     @Column(length = 3000, nullable = false)
@@ -41,4 +42,16 @@ public class Article extends BaseUpdateInfoEntity {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
 
+    @Builder
+    public Article(String slug, String title, String description, String body, User author) {
+        this.slug = slug;
+        this.title = title;
+        this.description = description;
+        this.body = body;
+        this.author = author;
+    }
+
+    public Article(String title, String description, String body, User author) {
+        this(null, title, description, body, author);
+    }
 }
