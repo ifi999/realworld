@@ -20,11 +20,16 @@ public class ArticleTag extends BaseCreateInfoEntity {
     @Column(name = "article_tag_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article_id")
     private Article article;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tag_id")
     private Tag tag;
 
-
+    public ArticleTag(Article article, Tag tag) {
+        this.article = article;
+        this.tag = tag;
+    }
 }

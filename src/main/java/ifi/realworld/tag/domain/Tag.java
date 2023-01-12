@@ -22,7 +22,10 @@ public class Tag extends BaseCreateInfoEntity {
     @Column(name = "tag_id")
     private Long id;
 
-    @Column(length = 255, nullable = false)
+    @Column(length = 255, nullable = false, unique = true)
     private String name;
 
+    public Tag(String name) {
+        this.name = name;
+    }
 }
