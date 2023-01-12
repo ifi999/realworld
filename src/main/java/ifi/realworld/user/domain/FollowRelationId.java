@@ -8,6 +8,7 @@ import java.io.Serializable;
 @Getter
 @ToString
 @Embeddable
+@EqualsAndHashCode(of = {"followerId", "followeeId"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FollowRelationId implements Serializable {
 
