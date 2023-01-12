@@ -1,13 +1,12 @@
 package ifi.realworld.user.app.service;
 
-import ifi.realworld.user.domain.User;
-import org.springframework.data.util.Pair;
+import ifi.realworld.user.api.dto.ProfileDto;
 
 public interface ProfileService {
 
-    Pair<User, Boolean> getProfile(String username);
+    ProfileDto getProfile(String username);
 
-    Pair<User, Boolean> followUser(String username);
+    ProfileDto followUser(String username);
 
-    Pair<User, Boolean> unFollowUser(String username);
+    ProfileDto unFollowUser(String username);
 }

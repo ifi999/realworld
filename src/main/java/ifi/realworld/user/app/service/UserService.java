@@ -1,19 +1,16 @@
 package ifi.realworld.user.app.service;
 
-import ifi.realworld.user.api.dto.UserCreateRequest;
-import ifi.realworld.user.api.dto.UserLoginDto;
-import ifi.realworld.user.api.dto.UserUpdateRequest;
-import ifi.realworld.user.domain.User;
+import ifi.realworld.user.api.dto.*;
 
 import javax.servlet.http.HttpServletResponse;
 
 public interface UserService {
 
-    User createUser(UserCreateRequest dto);
+    UserCreateResponse createUser(UserCreateRequest dto);
 
-    User login(UserLoginDto dto, HttpServletResponse response);
+    UserLoginDto login(UserLoginDto dto, HttpServletResponse response);
 
-    User getCurrentUserInfo();
+    UserInfoDto getCurrentUserInfo();
 
-    User updateUser(UserUpdateRequest dto, HttpServletResponse response);
+    UserInfoDto updateUser(UserUpdateRequest dto, HttpServletResponse response);
 }

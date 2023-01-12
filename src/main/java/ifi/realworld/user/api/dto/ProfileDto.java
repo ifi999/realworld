@@ -4,7 +4,6 @@ import ifi.realworld.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.util.Pair;
 
 @Getter
 @NoArgsConstructor
@@ -23,12 +22,12 @@ public class ProfileDto {
         this.following = following;
     }
 
-    public static ProfileDto of(Pair<User, Boolean> profile) {
+    public static ProfileDto of(User user, Boolean followed) {
         return ProfileDto.builder()
-                .username(profile.getFirst().getUsername())
-                .bio(profile.getFirst().getBio())
-                .image(profile.getFirst().getImage())
-                .following(profile.getSecond())
+                .username(user.getUsername())
+                .bio(user.getBio())
+                .image(user.getImage())
+                .following(followed)
                 .build();
     }
 }

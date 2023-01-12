@@ -16,17 +16,17 @@ public class ProfileController {
 
     @GetMapping("/{username}")
     public ProfileDto getProfile(@PathVariable String username) {
-        return ProfileDto.of(profileService.getProfile(username));
+        return profileService.getProfile(username);
     }
 
     @PostMapping("/{username}/follow")
     public ProfileDto followUser(@PathVariable String username) {
-        return ProfileDto.of(profileService.followUser(username));
+        return profileService.followUser(username);
     }
 
     @DeleteMapping("/{username}/follow")
     public ProfileDto unFollowUser(@PathVariable String username) {
-        return ProfileDto.of(profileService.unFollowUser(username));
+        return profileService.unFollowUser(username);
     }
 
 }

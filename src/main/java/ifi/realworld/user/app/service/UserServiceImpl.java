@@ -7,9 +7,7 @@ import ifi.realworld.common.exception.UserNotFoundException;
 import ifi.realworld.common.security.CustomUserDetailsService;
 import ifi.realworld.common.security.JwtProvider;
 import ifi.realworld.user.api.UserPasswordEncoder;
-import ifi.realworld.user.api.dto.UserCreateRequest;
-import ifi.realworld.user.api.dto.UserLoginDto;
-import ifi.realworld.user.api.dto.UserUpdateRequest;
+import ifi.realworld.user.api.dto.*;
 import ifi.realworld.user.domain.User;
 import ifi.realworld.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +35,7 @@ public class UserServiceImpl implements UserService {
     private final CustomUserDetailsService customUserDetailsService;
 
     @Override
-    public User createUser(UserCreateRequest dto) {
+    public UserCreateResponse createUser(UserCreateRequest dto) {
         Optional<User> checkDuplicatedUser = userRepository.findByEmailOrUsername(dto.getEmail(), dto.getUsername());
         if (checkDuplicatedUser.isPresent()) {
             throw new AlreadyExistedUserException(dto.getEmail());
@@ -49,11 +47,11 @@ public class UserServiceImpl implements UserService {
                         .password(dto.getPassword())
                         .passwordEncoder(passwordEncoder)
                         .build();
-        return userRepository.save(user);
+        return UserCreateResponse.of(userRepository.save(user));
     }
 
     @Override
-    public User login(UserLoginDto dto, HttpServletResponse response) {
+    public UserLoginDto login(UserLoginDto dto, HttpServletResponse response) {
         Optional<User> findUser = userRepository.findByEmail(dto.getEmail());
         if (findUser.isEmpty()) {
             throw new InvalidEmailException("Invalid " + dto.getEmail() + ".");
@@ -66,16 +64,16 @@ public class UserServiceImpl implements UserService {
         }
 
         createToken(user, response);
-        return user;
+        return UserLoginDto.of(user);
     }
 
     @Override
-    public User getCurrentUserInfo() {
-        return getCurrentUser();
+    public UserInfoDto getCurrentUserInfo() {
+        return UserInfoDto.of(getCurrentUser());
     }
 
     @Override
-    public User updateUser(UserUpdateRequest dto, HttpServletResponse response) {
+    public UserInfoDto updateUser(UserUpdateRequest dto, HttpServletResponse response) {
         Optional<User> findEmail = userRepository.findByEmailOrUsername(dto.getEmail(), dto.getUsername());
         if (findEmail.isPresent()) {
             throw new AlreadyExistedUserException("Email or Name");
@@ -92,7 +90,7 @@ public class UserServiceImpl implements UserService {
             this.createNewAuthentication(user, response);
         }
 
-        return user;
+        return UserInfoDto.of(user);
     }
 
     private User getCurrentUser() {
@@ -101,7 +99,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email + " not found."));
     }
 
-    public void createNewAuthentication(User user, HttpServletResponse response) {
+    private void createNewAuthentication(User user, HttpServletResponse response) {
         UserDetails userDetails = customUserDetailsService.loadUserById(user.getId());
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, "", Collections.emptyList()));
         this.createToken(user, response);
