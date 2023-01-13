@@ -1,9 +1,12 @@
 package ifi.realworld.article.app.service;
 
 import ifi.realworld.article.api.dto.ArticleCreateRequest;
+import ifi.realworld.article.api.dto.ArticleSearchDto;
+import ifi.realworld.article.api.dto.MultipleArticleDto;
 import ifi.realworld.article.api.dto.SingleArticleDto;
 import ifi.realworld.article.domain.Article;
 import ifi.realworld.article.domain.ArticleTag;
+import ifi.realworld.article.domain.repository.ArticleJpaRepository;
 import ifi.realworld.article.domain.repository.ArticleRepository;
 import ifi.realworld.article.domain.repository.ArticleTagRepository;
 import ifi.realworld.common.exception.UserNotFoundException;
@@ -13,10 +16,12 @@ import ifi.realworld.tag.domain.repository.TagRepository;
 import ifi.realworld.user.domain.User;
 import ifi.realworld.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +31,7 @@ import java.util.Optional;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ArticleJpaRepository articleJpaRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
     private final ArticleTagRepository articleTagRepository;
@@ -35,23 +41,33 @@ public class ArticleServiceImpl implements ArticleService {
         User author = getAuthor();
         Article article = new Article(dto.getTitle(), dto.getDescription(), dto.getBody(), author);
         Article savedArticle = articleRepository.save(article);
-        // TODO - 매번 중복 태그 찾는 쿼리 돌리기가 좀 그런데 더 좋게 어떻게 해야할 지 모르겠음. 알아보기
+        // TODO - 1. 매번 중복 태그 찾는 쿼리 돌리기가 좀 그런데 더 좋게 어떻게 해야할 지 모르겠음. 알아보기
+        //      - 2. tags 이상함. Entity에서 처리해야할 것 같은데 이것도 어떻게 해야할 지 모르겠음.
         List<String> tagList = dto.getTagList();
-        for(String tag : tagList) {
-            Tag tagEntity = new Tag(tag);
-            createTag(tagEntity);
-            createArticleTag(article, tagEntity);
+        List<ArticleTag> tags = new ArrayList<>();
+        if (tagList != null && !tagList.isEmpty()) {
+            for(String tag : tagList) {
+                Tag tagEntity = new Tag(tag);
+                createTag(tagEntity);
+                ArticleTag articleTag = createArticleTag(article, tagEntity);
+                tags.add(articleTag);
+            }
         }
 
         return SingleArticleDto.builder()
                 .article(savedArticle)
-                .tagList(tagList)
+                .tagList(tags)
                 .author(savedArticle.getAuthor())
                 .build();
     }
 
-    private void createArticleTag(Article article, Tag tagEntity) {
-        articleTagRepository.save(new ArticleTag(article, tagEntity));
+    @Override
+    public MultipleArticleDto getArticles(ArticleSearchDto dto, Pageable pageable) {
+        return articleJpaRepository.getArticles();
+    }
+
+    private ArticleTag createArticleTag(Article article, Tag tagEntity) {
+        return articleTagRepository.save(new ArticleTag(article, tagEntity));
     }
 
     private void createTag(Tag tagEntity) {

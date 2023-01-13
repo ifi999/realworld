@@ -1,6 +1,8 @@
 package ifi.realworld.article.api.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import ifi.realworld.article.domain.Article;
+import ifi.realworld.article.domain.ArticleTag;
 import ifi.realworld.user.api.dto.UserInfoDto;
 import ifi.realworld.user.domain.User;
 import lombok.Builder;
@@ -18,7 +20,7 @@ public class SingleArticleDto {
     private String title;
     private String description;
     private String body;
-    private List<String> tagList;
+    private List<ArticleTag> tagList;
     private boolean favorited;
     private int favoritesCount;
     private UserInfoDto author;
@@ -26,7 +28,7 @@ public class SingleArticleDto {
     private LocalDateTime updatedAt;
 
     @Builder
-    public SingleArticleDto(Article article, List<String> tagList, User author) {
+    public SingleArticleDto(Article article, List<ArticleTag> tagList, User author) {
         this.slug = article.getSlug();
         this.title = article.getTitle();
         this.description = article.getDescription();
@@ -38,4 +40,20 @@ public class SingleArticleDto {
         this.createdAt = article.getCreatedAt();
         this.updatedAt = article.getLastModifiedAt();
     }
+
+    @QueryProjection
+    public SingleArticleDto(String slug, String title, String description, String body, List<ArticleTag> tagList, User author, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.slug = slug;
+        this.title = title;
+        this.description = description;
+        this.body = body;
+        this.tagList = tagList;
+        this.favorited = false; // 임시
+        this.favoritesCount = 0; // 임시
+        this.author = UserInfoDto.of(author);
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+
 }
