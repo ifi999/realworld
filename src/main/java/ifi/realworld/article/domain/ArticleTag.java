@@ -5,11 +5,13 @@ import ifi.realworld.tag.domain.Tag;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ArticleTag extends BaseCreateInfoEntity {
 

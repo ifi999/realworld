@@ -21,9 +21,11 @@ public class Favorite {
     private FavoriteType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article_id")
     private Article articleId;
 
 }

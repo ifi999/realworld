@@ -42,6 +42,9 @@ public class Article extends BaseUpdateInfoEntity {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "article")
+    private List<ArticleTag> tagList = new ArrayList<>();
+
     @Builder
     public Article(String slug, String title, String description, String body, User author) {
         this.slug = slug;
