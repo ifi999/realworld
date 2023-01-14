@@ -1,5 +1,6 @@
 package ifi.realworld.article.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import ifi.realworld.article.domain.Article;
 import ifi.realworld.article.domain.ArticleTag;
@@ -24,7 +25,9 @@ public class SingleArticleDto {
     private boolean favorited;
     private int favoritesCount;
     private UserInfoDto author;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt;
 
     @Builder
