@@ -2,10 +2,7 @@ package ifi.realworld.user.domain;
 
 import ifi.realworld.common.entity.BaseUpdateInfoEntity;
 import ifi.realworld.user.api.UserPasswordEncoder;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -14,6 +11,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
+@ToString(of = {"id", "username", "email", "bio", "image"})
 @Table(name = "users")
 @DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

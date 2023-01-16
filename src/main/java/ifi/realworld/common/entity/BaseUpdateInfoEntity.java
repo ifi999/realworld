@@ -1,5 +1,6 @@
 package ifi.realworld.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -19,6 +20,7 @@ public class BaseUpdateInfoEntity extends BaseCreateInfoEntity {
     private Long lastModifiedBy;
 
     @LastModifiedDate
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime lastModifiedAt;
 
 }

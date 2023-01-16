@@ -3,10 +3,7 @@ package ifi.realworld.article.domain;
 import ifi.realworld.comment.domain.Comment;
 import ifi.realworld.common.entity.BaseUpdateInfoEntity;
 import ifi.realworld.user.domain.User;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +11,7 @@ import java.util.List;
 
 @Getter
 @Entity
+@ToString(of = {"id", "slug", "title", "description", "body", "author"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Article extends BaseUpdateInfoEntity {
 
