@@ -17,7 +17,7 @@ public class Comment extends BaseUpdateInfoEntity {
     private static final long serialVersionUID = -7223512392625279021L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "comment_id")
     private Long id;
 

@@ -2,6 +2,7 @@ package ifi.realworld.article.api;
 
 import ifi.realworld.article.api.dto.ArticleCreateRequest;
 import ifi.realworld.article.api.dto.ArticleSearchDto;
+import ifi.realworld.article.api.dto.ArticleUpdateRequest;
 import ifi.realworld.article.api.dto.SingleArticleDto;
 import ifi.realworld.article.app.service.ArticleService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,11 @@ public class ArticleController {
     @GetMapping("/articles")
     public Page<SingleArticleDto> getArticles(final ArticleSearchDto dto, Pageable pageable) {
         return articleService.getArticles(dto, pageable);
+    }
+
+    @PutMapping("/articles/{slug}")
+    public SingleArticleDto updateArticle(@PathVariable String slug, @RequestBody @Valid final ArticleUpdateRequest dto) {
+        return articleService.updateArticle(slug, dto);
     }
 
 }

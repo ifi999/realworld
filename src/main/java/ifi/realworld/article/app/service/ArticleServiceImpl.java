@@ -2,12 +2,14 @@ package ifi.realworld.article.app.service;
 
 import ifi.realworld.article.api.dto.ArticleCreateRequest;
 import ifi.realworld.article.api.dto.ArticleSearchDto;
+import ifi.realworld.article.api.dto.ArticleUpdateRequest;
 import ifi.realworld.article.api.dto.SingleArticleDto;
 import ifi.realworld.article.domain.Article;
 import ifi.realworld.article.domain.ArticleTag;
 import ifi.realworld.article.domain.repository.ArticleJpaRepository;
 import ifi.realworld.article.domain.repository.ArticleRepository;
 import ifi.realworld.article.domain.repository.ArticleTagRepository;
+import ifi.realworld.common.exception.ArticleNotFoundException;
 import ifi.realworld.common.exception.UserNotFoundException;
 import ifi.realworld.common.security.CustomUserDetailsService;
 import ifi.realworld.tag.domain.Tag;
@@ -50,13 +52,7 @@ public class ArticleServiceImpl implements ArticleService {
         //      - 2. tags 이상함. Entity에서 처리해야할 것 같은데 이것도 어떻게 해야할 지 모르겠음.
         List<String> tagList = dto.getTagList();
         List<Tag> tags = new ArrayList<>();
-        if (tagList != null && !tagList.isEmpty()) {
-            for(String t : tagList) {
-                Tag tagEntity = createTag(new Tag(t));
-                createArticleTag(article, tagEntity);
-                tags.add(tagEntity);
-            }
-        }
+        setArticleTag(article, tagList, tags);
 
         return SingleArticleDto.builder()
                 .article(savedArticle)
@@ -68,6 +64,38 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Page<SingleArticleDto> getArticles(ArticleSearchDto search, Pageable pageable) {
         return articleJpaRepository.getArticles(search, pageable);
+    }
+
+    @Override
+    public SingleArticleDto updateArticle(String slug, ArticleUpdateRequest dto) {
+        Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
+        article.editArticle(dto.getTitle(), dto.getDescription(), dto.getBody());
+        articleTagRepository.deleteAllInBatch(article.getTagList());
+        // TODO - tagList를 변경감지로 하고 싶었는데 못하였음. 구조의 문제인지 내가 방식을 못 찾아낸건지 모르겠음
+
+        List<String> tagList = dto.getTagList();
+        List<Tag> tags = new ArrayList<>();
+        List<ArticleTag> articleTags = setArticleTag(article, tagList, tags);
+        article.editTag(articleTags);
+
+        return SingleArticleDto.builder()
+                .article(article)
+                .tagList(tags)
+                .author(article.getAuthor())
+                .build();
+    }
+
+    private List<ArticleTag> setArticleTag(Article article, List<String> tagList, List<Tag> tags) {
+        List<ArticleTag> result = new ArrayList<>();
+        if (tagList != null && !tagList.isEmpty()) {
+            for (String t : tagList) {
+                Tag tagEntity = createTag(new Tag(t));
+                ArticleTag articleTag = createArticleTag(article, tagEntity);
+                tags.add(tagEntity);
+                result.add(articleTag);
+            }
+        }
+        return result;
     }
 
     private ArticleTag createArticleTag(Article article, Tag tagEntity) {
