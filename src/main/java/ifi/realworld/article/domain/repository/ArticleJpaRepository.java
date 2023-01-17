@@ -54,6 +54,9 @@ public class ArticleJpaRepository {
                         authorEq(search.getAuthor())
                 )
                 .groupBy(article.id)
+                .orderBy(
+                        article.id.desc()
+                )
                 .limit(pageable.getPageSize())
                 .offset(pageable.getOffset())
                 .fetch();
