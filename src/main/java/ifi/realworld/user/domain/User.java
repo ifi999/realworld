@@ -20,7 +20,7 @@ public class User extends BaseUpdateInfoEntity {
     private static final long serialVersionUID = 3144631761026005885L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 

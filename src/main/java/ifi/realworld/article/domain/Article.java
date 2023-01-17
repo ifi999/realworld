@@ -11,6 +11,7 @@ import java.util.List;
 
 @Getter
 @Entity
+@Table(name = "articles")
 @ToString(of = {"id", "slug", "title", "description", "body", "author"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Article extends BaseUpdateInfoEntity {
@@ -18,7 +19,7 @@ public class Article extends BaseUpdateInfoEntity {
     private static final long serialVersionUID = -560518392611816483L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_id")
     private Long id;
 
@@ -44,15 +45,17 @@ public class Article extends BaseUpdateInfoEntity {
     private List<ArticleTag> tagList = new ArrayList<>();
 
     @Builder
-    public Article(String slug, String title, String description, String body, User author) {
-        this.slug = slug;
+    public Article(String title, String description, String body, User author) {
         this.title = title;
+        this.slug = setSlug(title);
         this.description = description;
         this.body = body;
         this.author = author;
     }
 
-    public Article(String title, String description, String body, User author) {
-        this(null, title, description, body, author);
+    private String setSlug(String title) {
+        String[] titleSplit = title.split(" ");
+        if (titleSplit.length > 1) return titleSplit[0] + "-" + titleSplit[1];
+        else return titleSplit[0];
     }
 }

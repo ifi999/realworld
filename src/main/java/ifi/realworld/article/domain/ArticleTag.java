@@ -16,7 +16,7 @@ public class ArticleTag extends BaseCreateInfoEntity {
     private static final long serialVersionUID = -1795508465588638085L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_tag_id")
     private Long id;
 
