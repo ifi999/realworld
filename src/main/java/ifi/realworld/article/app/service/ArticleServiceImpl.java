@@ -39,14 +39,12 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public SingleArticleDto createArticles(ArticleCreateRequest dto) {
         User author = getAuthor();
-        String slug = getSlugToTitle(dto);
         Article article = Article.builder()
-                .slug(slug)
-                .title(dto.getTitle())
-                .description(dto.getDescription())
-                .body(dto.getBody())
-                .author(author)
-                .build();
+                        .title(dto.getTitle())
+                        .description(dto.getDescription())
+                        .body(dto.getBody())
+                        .author(author)
+                        .build();
         Article savedArticle = articleRepository.save(article);
         // TODO - 1. 매번 중복 태그 찾는 쿼리 돌리기가 좀 그런데 더 좋게 어떻게 해야할 지 모르겠음. 알아보기
         //      - 2. tags 이상함. Entity에서 처리해야할 것 같은데 이것도 어떻게 해야할 지 모르겠음.
@@ -65,12 +63,6 @@ public class ArticleServiceImpl implements ArticleService {
                 .tagList(tags)
                 .author(savedArticle.getAuthor())
                 .build();
-    }
-
-    private String getSlugToTitle(ArticleCreateRequest dto) {
-        String[] titleSplit = dto.getTitle().split(" ");
-        if (titleSplit.length > 1) return titleSplit[0] + " " + titleSplit[1];
-        else return titleSplit[0];
     }
 
     @Override
