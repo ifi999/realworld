@@ -36,4 +36,9 @@ public class ArticleController {
         return articleService.updateArticle(slug, dto);
     }
 
+    @DeleteMapping("/articles/{slug}")
+    public void deleteArticle(@PathVariable String slug) {
+        articleService.deleteArticle(slug);
+    }
+
 }

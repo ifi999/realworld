@@ -68,7 +68,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public SingleArticleDto updateArticle(String slug, ArticleUpdateRequest dto) {
-        Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
+        Article article = getArticleBySlug(slug);
         article.editArticle(dto.getTitle(), dto.getDescription(), dto.getBody());
         articleTagRepository.deleteAllInBatch(article.getTagList());
         // TODO - tagList를 변경감지로 하고 싶었는데 못하였음. 구조의 문제인지 내가 방식을 못 찾아낸건지 모르겠음
@@ -83,6 +83,16 @@ public class ArticleServiceImpl implements ArticleService {
                 .tagList(tags)
                 .author(article.getAuthor())
                 .build();
+    }
+
+    @Override
+    public void deleteArticle(String slug) {
+        Article article = getArticleBySlug(slug);
+        articleRepository.delete(article);
+    }
+
+    private Article getArticleBySlug(String slug) {
+        return articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
     }
 
     private List<ArticleTag> setArticleTag(Article article, List<String> tagList, List<Tag> tags) {
