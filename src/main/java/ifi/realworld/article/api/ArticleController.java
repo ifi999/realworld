@@ -31,6 +31,11 @@ public class ArticleController {
         return articleService.getArticles(dto, pageable);
     }
 
+    @GetMapping("/articles/{slug}")
+    public SingleArticleDto getArticle(@PathVariable String slug) {
+        return articleService.getArticle(slug);
+    }
+
     @PutMapping("/articles/{slug}")
     public SingleArticleDto updateArticle(@PathVariable String slug, @RequestBody @Valid final ArticleUpdateRequest dto) {
         return articleService.updateArticle(slug, dto);

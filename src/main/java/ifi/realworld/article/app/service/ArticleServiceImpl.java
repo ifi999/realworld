@@ -8,6 +8,7 @@ import ifi.realworld.article.domain.Article;
 import ifi.realworld.article.domain.ArticleTag;
 import ifi.realworld.article.domain.repository.ArticleJpaRepository;
 import ifi.realworld.article.domain.repository.ArticleRepository;
+import ifi.realworld.article.domain.repository.ArticleTagJpaRepository;
 import ifi.realworld.article.domain.repository.ArticleTagRepository;
 import ifi.realworld.common.exception.ArticleNotFoundException;
 import ifi.realworld.common.exception.UserNotFoundException;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -37,6 +39,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
     private final ArticleTagRepository articleTagRepository;
+    private final ArticleTagJpaRepository articleTagJpaRepository;
 
     @Override
     public SingleArticleDto createArticles(ArticleCreateRequest dto) {
@@ -64,6 +67,21 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Page<SingleArticleDto> getArticles(ArticleSearchDto search, Pageable pageable) {
         return articleJpaRepository.getArticles(search, pageable);
+    }
+
+    @Override
+    public SingleArticleDto getArticle(String slug) {
+        Article article = getArticleBySlug(slug);
+        List<ArticleTag> articleTags = articleTagJpaRepository.findByArticleId(article.getId());
+        List<Tag> tags = articleTags.stream()
+                .map(o -> o.getTag())
+                .collect(Collectors.toList());
+
+        return SingleArticleDto.builder()
+                .article(article)
+                .tagList(tags)
+                .author(article.getAuthor())
+                .build();
     }
 
     @Override

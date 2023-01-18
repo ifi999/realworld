@@ -16,4 +16,6 @@ public interface ArticleService {
     SingleArticleDto updateArticle(String slug, ArticleUpdateRequest dto);
 
     void deleteArticle(String slug);
+
+    SingleArticleDto getArticle(String slug);
 }
