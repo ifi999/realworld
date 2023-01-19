@@ -29,14 +29,18 @@ public class FavoriteJpaRepository {
     }
 
     public Boolean isFavorited(Long articleId, Long userId) {
-        Favorite favorited = queryFactory
+        Favorite favorited = findByArticleAndUser(articleId, userId);
+        return favorited == null ? false : true;
+    }
+
+    public Favorite findByArticleAndUser(Long articleId, Long userId) {
+        return queryFactory
                 .selectFrom(favorite)
                 .where(
                         favorite.article.id.eq(articleId),
                         favorite.user.id.eq(userId)
                 )
                 .fetchOne();
-        return favorited == null ? false : true;
     }
 
 }

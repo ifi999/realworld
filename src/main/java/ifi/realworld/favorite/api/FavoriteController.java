@@ -5,10 +5,7 @@ import ifi.realworld.favorite.app.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +20,11 @@ public class FavoriteController {
         //        똑같은 내용일 것이라 재사용하고 싶은데
 
         return favoriteService.favoriteArticle(currentUser.getUsername(), slug);
+    }
+
+    @DeleteMapping("/articles/{slug}/favorite")
+    public SingleArticleDto unfavoriteArticle(@AuthenticationPrincipal User currentUser, @PathVariable String slug) {
+        return favoriteService.unfavoriteArticle(currentUser.getUsername(), slug);
     }
 
 }

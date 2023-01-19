@@ -7,6 +7,7 @@ import ifi.realworld.article.domain.repository.ArticleRepository;
 import ifi.realworld.article.domain.repository.ArticleTagJpaRepository;
 import ifi.realworld.common.exception.AlreadyRegistArticleFavorite;
 import ifi.realworld.common.exception.ArticleNotFoundException;
+import ifi.realworld.common.exception.NotFoundArticleFavoriteRelation;
 import ifi.realworld.common.exception.UserNotFoundException;
 import ifi.realworld.favorite.domain.Favorite;
 import ifi.realworld.favorite.domain.repository.FavoriteJpaRepository;
@@ -32,32 +33,57 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final ArticleRepository articleRepository;
     private final ArticleTagJpaRepository articleTagJpaRepository;
 
+    // TODO - 여기 과정이 너무 난잡한듯............. Entity 구상부터 틀려먹은 느낌
+
     @Override
     public SingleArticleDto favoriteArticle(String email, String slug) {
-        // TODO - 너무 복잡해보임
         User currentUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
-        List<ArticleTag> articleTags = articleTagJpaRepository.findByArticleId(article.getId());
-        List<Tag> tags = articleTags.stream()
-                .map(o -> o.getTag())
-                .collect(Collectors.toList());
-        Favorite favorite = Favorite.builder()
-                .articleId(article)
-                .userId(currentUser)
-                .build();
 
         Boolean favorited = favoriteJpaRepository.isFavorited(article.getId(), currentUser.getId());
         if (favorited) throw new AlreadyRegistArticleFavorite("This " + article.getTitle() + " has already been favorited.");
 
+        Favorite favorite = Favorite.builder()
+                .articleId(article)
+                .userId(currentUser)
+                .build();
         Favorite saved = favoriteRepository.save(favorite);
         long favoriteCount = favoriteJpaRepository.articleFavoriteCount(article.getId());
 
         return SingleArticleDto.builder()
                 .article(saved.getArticle())
                 .author(saved.getArticle().getAuthor())
-                .tagList(tags)
+                .tagList(getTags(article.getId()))
                 .favorited(true)
                 .favoritesCount(favoriteCount)
                 .build();
+    }
+
+    @Override
+    public SingleArticleDto unfavoriteArticle(String email, String slug) {
+        User currentUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
+
+        Boolean favorited = favoriteJpaRepository.isFavorited(article.getId(), currentUser.getId());
+        if (!favorited) throw new NotFoundArticleFavoriteRelation();
+
+        Favorite favorite = favoriteJpaRepository.findByArticleAndUser(article.getId(), currentUser.getId());
+        favoriteRepository.delete(favorite);
+        long favoriteCount = favoriteJpaRepository.articleFavoriteCount(article.getId());
+
+        return SingleArticleDto.builder()
+                .article(article)
+                .author(article.getAuthor())
+                .tagList(getTags(article.getId()))
+                .favorited(false)
+                .favoritesCount(favoriteCount)
+                .build();
+    }
+
+    private List<Tag> getTags(Long articldId){
+        List<ArticleTag> articleTags = articleTagJpaRepository.findByArticleId(articldId);
+        return articleTags.stream()
+                .map(o -> o.getTag())
+                .collect(Collectors.toList());
     }
 }

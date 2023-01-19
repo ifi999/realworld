@@ -6,4 +6,5 @@ public interface FavoriteService {
 
     SingleArticleDto favoriteArticle(String email, String slug);
 
+    SingleArticleDto unfavoriteArticle(String email, String slug);
 }
