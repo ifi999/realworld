@@ -13,6 +13,7 @@ import ifi.realworld.article.domain.repository.ArticleTagRepository;
 import ifi.realworld.common.exception.ArticleNotFoundException;
 import ifi.realworld.common.exception.UserNotFoundException;
 import ifi.realworld.common.security.CustomUserDetailsService;
+import ifi.realworld.favorite.domain.repository.FavoriteJpaRepository;
 import ifi.realworld.tag.domain.Tag;
 import ifi.realworld.tag.domain.repository.TagRepository;
 import ifi.realworld.user.domain.User;
@@ -40,6 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
     private final TagRepository tagRepository;
     private final ArticleTagRepository articleTagRepository;
     private final ArticleTagJpaRepository articleTagJpaRepository;
+    private final FavoriteJpaRepository favoriteJpaRepository;
 
     @Override
     public SingleArticleDto createArticles(ArticleCreateRequest dto) {
@@ -61,6 +63,8 @@ public class ArticleServiceImpl implements ArticleService {
                 .article(savedArticle)
                 .tagList(tags)
                 .author(savedArticle.getAuthor())
+                .favorited(false)
+                .favoritesCount(0)
                 .build();
     }
 
@@ -77,10 +81,15 @@ public class ArticleServiceImpl implements ArticleService {
                 .map(o -> o.getTag())
                 .collect(Collectors.toList());
 
+        Boolean favorited = getFavorited(article);
+        long favoriteCount = favoriteJpaRepository.articleFavoriteCount(article.getId());
+
         return SingleArticleDto.builder()
                 .article(article)
                 .tagList(tags)
                 .author(article.getAuthor())
+                .favoritesCount(favoriteCount)
+                .favorited(favorited)
                 .build();
     }
 
@@ -96,10 +105,15 @@ public class ArticleServiceImpl implements ArticleService {
         List<ArticleTag> articleTags = setArticleTag(article, tagList, tags);
         article.editTag(articleTags);
 
+        Boolean favorited = getFavorited(article);
+        long favoriteCount = favoriteJpaRepository.articleFavoriteCount(article.getId());
+
         return SingleArticleDto.builder()
                 .article(article)
                 .tagList(tags)
                 .author(article.getAuthor())
+                .favorited(favorited)
+                .favoritesCount(favoriteCount)
                 .build();
     }
 
@@ -107,6 +121,13 @@ public class ArticleServiceImpl implements ArticleService {
     public void deleteArticle(String slug) {
         Article article = getArticleBySlug(slug);
         articleRepository.delete(article);
+    }
+
+    private Boolean getFavorited(Article article) {
+        UserDetails currentUser = CustomUserDetailsService.getCurrentUserDetails();
+        User user = userRepository.findByEmail(currentUser.getUsername()).orElseThrow(UserNotFoundException::new);
+        Boolean favorited = favoriteJpaRepository.isFavorited(article.getId(), user.getId());
+        return favorited;
     }
 
     private Article getArticleBySlug(String slug) {
