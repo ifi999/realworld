@@ -27,7 +27,7 @@ public class SingleArticleDto {
     private String body;
     private List<Tag> tagList = new ArrayList<>();
     private boolean favorited;
-    private int favoritesCount;
+    private Long favoritesCount;
     private UserInfoDto author;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
@@ -35,14 +35,14 @@ public class SingleArticleDto {
     private LocalDateTime updatedAt;
 
     @Builder
-    public SingleArticleDto(Article article, List<Tag> tagList, User author) {
+    public SingleArticleDto(Article article, List<Tag> tagList, User author, Boolean favorited, long favoritesCount) {
         this.slug = article.getSlug();
         this.title = article.getTitle();
         this.description = article.getDescription();
         this.body = article.getBody();
         this.tagList = tagList;
-        this.favorited = false;
-        this.favoritesCount = 0;
+        this.favorited = favorited;
+        this.favoritesCount = favoritesCount;
         this.author = UserInfoDto.of(author);
         this.createdAt = article.getCreatedAt();
         this.updatedAt = article.getLastModifiedAt();
@@ -57,7 +57,7 @@ public class SingleArticleDto {
         this.body = body;
 //        this.tagList = tag;
         this.favorited = false; // 임시
-        this.favoritesCount = 0; // 임시
+        this.favoritesCount = 0l; // 임시
         this.author = UserInfoDto.of(author);
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
