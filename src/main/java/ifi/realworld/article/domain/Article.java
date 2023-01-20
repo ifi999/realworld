@@ -57,7 +57,7 @@ public class Article extends BaseUpdateInfoEntity {
     private String setSlug(String title) {
         UUID uuid = UUID.randomUUID();
         String[] titleSplit = title.split(" ");
-        if (titleSplit.length > 1) return uuid + "_" + titleSplit[0] + "-" + titleSplit[1];
+        if (titleSplit.length > 1) return titleSplit[0] + "-" + titleSplit[1] + "_" + uuid;
         else return titleSplit[0];
     }
 

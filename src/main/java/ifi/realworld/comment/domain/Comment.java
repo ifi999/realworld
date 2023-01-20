@@ -28,4 +28,8 @@ public class Comment extends BaseUpdateInfoEntity {
     @JoinColumn(name = "article_id")
     private Article article;
 
+    public Comment(String body, Article article) {
+        this.body = body;
+        this.article = article;
+    }
 }
