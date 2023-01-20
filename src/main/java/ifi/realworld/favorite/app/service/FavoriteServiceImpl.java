@@ -9,7 +9,7 @@ import ifi.realworld.comment.domain.Comment;
 import ifi.realworld.comment.domain.repository.CommentRepository;
 import ifi.realworld.common.exception.AlreadyRegistArticleFavorite;
 import ifi.realworld.common.exception.ArticleNotFoundException;
-import ifi.realworld.common.exception.NotFoundArticleFavoriteRelation;
+import ifi.realworld.common.exception.NotFoundArticleFavoriteRelationException;
 import ifi.realworld.common.exception.UserNotFoundException;
 import ifi.realworld.favorite.domain.Favorite;
 import ifi.realworld.favorite.domain.repository.FavoriteJpaRepository;
@@ -71,7 +71,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         List<Comment> commentList = getCommentList(article);
 
         Boolean favorited = favoriteJpaRepository.isFavorited(article.getId(), currentUser.getId());
-        if (!favorited) throw new NotFoundArticleFavoriteRelation();
+        if (!favorited) throw new NotFoundArticleFavoriteRelationException();
 
         Favorite favorite = favoriteJpaRepository.findByArticleAndUser(article.getId(), currentUser.getId());
         favoriteRepository.delete(favorite);

@@ -28,4 +28,9 @@ public class CommentController {
         return commentService.getComments(slug);
     }
 
+    @DeleteMapping("/articles/{slug}/comments/{id}")
+    public void deleteComments(@PathVariable String slug, @PathVariable Long id) {
+        commentService.deleteComments(slug, id);
+    }
+
 }

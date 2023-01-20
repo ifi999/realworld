@@ -10,4 +10,6 @@ public interface CommentService {
     CommentResponseDto createComments(String slug, CommentCreateRequest dto);
 
     List<CommentResponseDto> getComments(String slug);
+
+    void deleteComments(String slug, Long id);
 }

@@ -7,12 +7,14 @@ import ifi.realworld.comment.api.dto.CommentResponseDto;
 import ifi.realworld.comment.domain.Comment;
 import ifi.realworld.comment.domain.repository.CommentRepository;
 import ifi.realworld.common.exception.ArticleNotFoundException;
+import ifi.realworld.common.exception.NotFoundCommentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -38,6 +40,15 @@ public class CommentServiceImpl implements CommentService {
         commentList.stream()
                 .forEach(o -> result.add(new CommentResponseDto(o)));
         return result;
+    }
+
+    @Override
+    public void deleteComments(String slug, Long id) {
+        Article article = getArticle(slug);
+        Optional<Comment> findComment = commentRepository.findByIdAndArticleId(id, article);
+        if (findComment.isEmpty()) throw new NotFoundCommentException("This " + slug + " doesn't have this comment id " + id);
+
+        commentRepository.deleteByIdAndArticleId(id, article);
     }
 
     private Article getArticle(String slug) {
