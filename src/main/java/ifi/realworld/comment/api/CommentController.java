@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Transactional
 @RestController
@@ -20,6 +21,11 @@ public class CommentController {
     @PostMapping("/articles/{slug}/comments")
     public CommentResponseDto createComments(@PathVariable String slug, @RequestBody @Valid CommentCreateRequest dto) {
         return commentService.createComments(slug, dto);
+    }
+
+    @GetMapping("/articles/{slug}/comments")
+    public List<CommentResponseDto> getComments(@PathVariable String slug) {
+        return commentService.getComments(slug);
     }
 
 }
