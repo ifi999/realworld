@@ -3,6 +3,7 @@ package ifi.realworld.article.api.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import ifi.realworld.article.domain.Article;
+import ifi.realworld.comment.domain.Comment;
 import ifi.realworld.tag.domain.Tag;
 import ifi.realworld.user.api.dto.UserInfoDto;
 import ifi.realworld.user.domain.User;
@@ -26,6 +27,7 @@ public class SingleArticleDto {
     private String description;
     private String body;
     private List<Tag> tagList = new ArrayList<>();
+    private List<Comment> commentList = new ArrayList<>();
     private boolean favorited;
     private Long favoritesCount;
     private UserInfoDto author;
@@ -35,13 +37,14 @@ public class SingleArticleDto {
     private LocalDateTime updatedAt;
 
     @Builder
-    public SingleArticleDto(Article article, List<Tag> tagList, User author, Boolean favorited, long favoritesCount) {
+    public SingleArticleDto(Article article, List<Tag> tagList, List<Comment> commentList, User author, Boolean favorited, long favoritesCount) {
         this.id = article.getId();
         this.slug = article.getSlug();
         this.title = article.getTitle();
         this.description = article.getDescription();
         this.body = article.getBody();
         this.tagList = tagList;
+        this.commentList = commentList;
         this.favorited = favorited;
         this.favoritesCount = favoritesCount;
         this.author = UserInfoDto.of(author);

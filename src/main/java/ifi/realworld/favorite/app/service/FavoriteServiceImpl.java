@@ -5,6 +5,8 @@ import ifi.realworld.article.domain.Article;
 import ifi.realworld.article.domain.ArticleTag;
 import ifi.realworld.article.domain.repository.ArticleRepository;
 import ifi.realworld.article.domain.repository.ArticleTagJpaRepository;
+import ifi.realworld.comment.domain.Comment;
+import ifi.realworld.comment.domain.repository.CommentRepository;
 import ifi.realworld.common.exception.AlreadyRegistArticleFavorite;
 import ifi.realworld.common.exception.ArticleNotFoundException;
 import ifi.realworld.common.exception.NotFoundArticleFavoriteRelation;
@@ -32,6 +34,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
     private final ArticleTagJpaRepository articleTagJpaRepository;
+    private final CommentRepository commentRepository;
 
     // TODO - 여기 과정이 너무 난잡한듯............. Entity 구상부터 틀려먹은 느낌
 
@@ -39,6 +42,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     public SingleArticleDto favoriteArticle(String email, String slug) {
         User currentUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
+        List<Comment> commentList = getCommentList(article);
 
         Boolean favorited = favoriteJpaRepository.isFavorited(article.getId(), currentUser.getId());
         if (favorited) throw new AlreadyRegistArticleFavorite("This " + article.getTitle() + " has already been favorited.");
@@ -54,6 +58,7 @@ public class FavoriteServiceImpl implements FavoriteService {
                 .article(saved.getArticle())
                 .author(saved.getArticle().getAuthor())
                 .tagList(getTags(article.getId()))
+                .commentList(commentList)
                 .favorited(true)
                 .favoritesCount(favoriteCount)
                 .build();
@@ -63,6 +68,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     public SingleArticleDto unfavoriteArticle(String email, String slug) {
         User currentUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
+        List<Comment> commentList = getCommentList(article);
 
         Boolean favorited = favoriteJpaRepository.isFavorited(article.getId(), currentUser.getId());
         if (!favorited) throw new NotFoundArticleFavoriteRelation();
@@ -75,9 +81,14 @@ public class FavoriteServiceImpl implements FavoriteService {
                 .article(article)
                 .author(article.getAuthor())
                 .tagList(getTags(article.getId()))
+                .commentList(commentList)
                 .favorited(false)
                 .favoritesCount(favoriteCount)
                 .build();
+    }
+
+    private List<Comment> getCommentList(Article article) {
+        return commentRepository.findByArticleId(article.getId());
     }
 
     private List<Tag> getTags(Long articldId){
