@@ -9,11 +9,11 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
-        use_sql_comments: true # JPQL ?? ???
+        use_sql_comments: true
   #        show_sql: true
 
 logging:
