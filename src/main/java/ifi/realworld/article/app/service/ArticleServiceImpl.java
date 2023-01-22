@@ -14,7 +14,6 @@ import ifi.realworld.comment.domain.Comment;
 import ifi.realworld.comment.domain.repository.CommentRepository;
 import ifi.realworld.common.exception.ArticleNotFoundException;
 import ifi.realworld.common.exception.UserNotFoundException;
-import ifi.realworld.common.security.CustomUserDetailsService;
 import ifi.realworld.favorite.domain.repository.FavoriteJpaRepository;
 import ifi.realworld.tag.domain.Tag;
 import ifi.realworld.tag.domain.repository.TagRepository;
@@ -23,7 +22,6 @@ import ifi.realworld.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,8 +46,8 @@ public class ArticleServiceImpl implements ArticleService {
     private final CommentRepository commentRepository;
 
     @Override
-    public SingleArticleDto createArticles(ArticleCreateRequest dto) {
-        User author = getAuthor();
+    public SingleArticleDto createArticles(ArticleCreateRequest dto, org.springframework.security.core.userdetails.User user) {
+        User author = getAuthor(user.getUsername());
         Article article = Article.builder()
                         .title(dto.getTitle())
                         .description(dto.getDescription())
@@ -79,7 +77,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public SingleArticleDto getArticle(String slug) {
+    public SingleArticleDto getArticle(String slug, org.springframework.security.core.userdetails.User user) {
         Article article = getArticleBySlug(slug);
         List<ArticleTag> articleTags = articleTagJpaRepository.findByArticleId(article.getId());
         List<Tag> tags = articleTags.stream()
@@ -87,7 +85,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .collect(Collectors.toList());
         List<Comment> commentList = getCommentList(article);
 
-        Boolean favorited = getFavorited(article);
+        Boolean favorited = getFavorited(article, user.getUsername());
         long favoriteCount = favoriteJpaRepository.articleFavoriteCount(article.getId());
 
         return SingleArticleDto.builder()
@@ -101,7 +99,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public SingleArticleDto updateArticle(String slug, ArticleUpdateRequest dto) {
+    public SingleArticleDto updateArticle(String slug, ArticleUpdateRequest dto, org.springframework.security.core.userdetails.User user) {
         Article article = getArticleBySlug(slug);
         article.editArticle(dto.getTitle(), dto.getDescription(), dto.getBody());
         articleTagRepository.deleteAllInBatch(article.getTagList());
@@ -114,7 +112,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         List<Comment> commentList = getCommentList(article);
 
-        Boolean favorited = getFavorited(article);
+        Boolean favorited = getFavorited(article, user.getUsername());
         long favoriteCount = favoriteJpaRepository.articleFavoriteCount(article.getId());
 
         return SingleArticleDto.builder()
@@ -137,11 +135,9 @@ public class ArticleServiceImpl implements ArticleService {
         return commentRepository.findByArticleId(article.getId());
     }
 
-    private Boolean getFavorited(Article article) {
-        UserDetails currentUser = CustomUserDetailsService.getCurrentUserDetails();
-        User user = userRepository.findByEmail(currentUser.getUsername()).orElseThrow(UserNotFoundException::new);
-        Boolean favorited = favoriteJpaRepository.isFavorited(article.getId(), user.getId());
-        return favorited;
+    private Boolean getFavorited(Article article, String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        return favoriteJpaRepository.isFavorited(article.getId(), user.getId());
     }
 
     private Article getArticleBySlug(String slug) {
@@ -171,9 +167,7 @@ public class ArticleServiceImpl implements ArticleService {
         else return findTag.orElseThrow();
     }
 
-    private User getAuthor() {
-        UserDetails currentUserDetails = CustomUserDetailsService.getCurrentUserDetails();
-        String currentUserEmail = currentUserDetails.getUsername();
-        return userRepository.findByEmail(currentUserEmail).orElseThrow(() -> new UserNotFoundException(currentUserEmail + " not found."));
+    private User getAuthor(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email + " not found."));
     }
 }

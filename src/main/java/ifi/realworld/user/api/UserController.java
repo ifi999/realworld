@@ -3,6 +3,8 @@ package ifi.realworld.user.api;
 import ifi.realworld.user.api.dto.*;
 import ifi.realworld.user.app.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +30,16 @@ public class UserController {
     }
 
     @GetMapping("/user")
-    public UserInfoDto getCurrentUser() {
-        return userService.getCurrentUserInfo();
+    public UserInfoDto getCurrentUser(@AuthenticationPrincipal User currentUser) {
+        return userService.getCurrentUserInfo(currentUser);
     }
 
     @PutMapping("/user")
-    public UserInfoDto updateUser(@RequestBody @Valid final UserUpdateRequest dto, HttpServletResponse response) {
-        return userService.updateUser(dto, response);
+    public UserInfoDto updateUser(
+            @RequestBody @Valid final UserUpdateRequest dto
+            , HttpServletResponse response
+            , @AuthenticationPrincipal User currentUser) {
+        return userService.updateUser(dto, response, currentUser);
     }
 
 }
