@@ -12,8 +12,6 @@ public class CommentResponseDto {
     private String body;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
-    // TODO - createBy 필요
-//    private User author;
 
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
