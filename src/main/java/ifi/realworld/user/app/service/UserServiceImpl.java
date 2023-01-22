@@ -58,12 +58,9 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = findUser.orElseThrow(() -> new UserNotFoundException(dto.getEmail() + " not found."));
-        boolean matched = user.isMatched(dto.getPassword(), user.getPassword(), passwordEncoder);
-        if (!matched) {
-            throw new PasswordNotMatchedException(user.getEmail());
-        }
-
+        confirmPassword(dto, user);
         createToken(user, response);
+
         return UserLoginDto.of(user);
     }
 
@@ -90,6 +87,13 @@ public class UserServiceImpl implements UserService {
         }
 
         return UserInfoDto.of(currentUser);
+    }
+
+    private void confirmPassword(UserLoginDto dto, User user) {
+        boolean matched = user.isMatched(dto.getPassword(), user.getPassword(), passwordEncoder);
+        if (!matched) {
+            throw new PasswordNotMatchedException(user.getEmail());
+        }
     }
 
     private User getCurrentUser(String email) {
