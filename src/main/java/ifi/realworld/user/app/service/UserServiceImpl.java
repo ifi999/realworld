@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInfoDto getCurrentUserInfo(org.springframework.security.core.userdetails.User currentUser) {
-        return UserInfoDto.of(getCurrentUser(currentUser.getUsername()));
+        return UserInfoDto.of(this.getCurrentUser(currentUser.getUsername()));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
         if (findEmail.isPresent()) {
             throw new AlreadyExistedUserException("Email or Name");
         }
-        User currentUser = getCurrentUser(user.getUsername());
+        User currentUser = this.getCurrentUser(user.getUsername());
         currentUser.changeInfo(
                 dto.getUsername(), dto.getEmail()
                 , dto.getPassword(), passwordEncoder
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void createNewAuthentication(User user, HttpServletResponse response) {
-        UserDetails userDetails = customUserDetailsService.loadUserById(user.getId());
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, "", Collections.emptyList()));
         this.createToken(user, response);
     }
