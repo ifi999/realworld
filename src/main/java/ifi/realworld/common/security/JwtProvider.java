@@ -94,7 +94,6 @@ public class JwtProvider {
             // refresh token가 있다면 -> refresh token이 만료되지 않았을 경우 access token을 갱신하는 식?
             return !claims.getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
-            // TODO - JwtException 종류 및 처리 알아보기
             log.info("Expired JWT.");
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT.");

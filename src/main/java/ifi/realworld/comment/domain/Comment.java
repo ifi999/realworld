@@ -6,6 +6,7 @@ import ifi.realworld.common.entity.BaseUpdateInfoEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
 
 import javax.persistence.*;
 
@@ -29,6 +30,9 @@ public class Comment extends BaseUpdateInfoEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
+
+    @CreatedBy
+    private String createdBy;
 
     public Comment(String body, Article article) {
         this.body = body;

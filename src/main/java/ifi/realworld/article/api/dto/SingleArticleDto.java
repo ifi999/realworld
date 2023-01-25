@@ -39,8 +39,8 @@ public class SingleArticleDto {
     @Builder
     public SingleArticleDto(Article article, List<Tag> tagList, List<Comment> commentList, User author, Boolean favorited, long favoritesCount) {
         this.id = article.getId();
-        this.slug = article.getSlug();
         this.title = article.getTitle();
+        this.slug = article.setSlug(article.getTitle());
         this.description = article.getDescription();
         this.body = article.getBody();
         this.tagList = tagList;

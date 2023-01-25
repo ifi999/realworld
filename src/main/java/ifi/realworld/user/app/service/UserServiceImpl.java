@@ -58,49 +58,50 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = findUser.orElseThrow(() -> new UserNotFoundException(dto.getEmail() + " not found."));
-        boolean matched = user.isMatched(dto.getPassword(), user.getPassword(), passwordEncoder);
-        if (!matched) {
-            throw new PasswordNotMatchedException(user.getEmail());
-        }
-
+        confirmPassword(dto, user);
         createToken(user, response);
+
         return UserLoginDto.of(user);
     }
 
     @Override
-    public UserInfoDto getCurrentUserInfo() {
-        return UserInfoDto.of(getCurrentUser());
+    public UserInfoDto getCurrentUserInfo(org.springframework.security.core.userdetails.User currentUser) {
+        return UserInfoDto.of(this.getCurrentUser(currentUser.getUsername()));
     }
 
     @Override
-    public UserInfoDto updateUser(UserUpdateRequest dto, HttpServletResponse response) {
+    public UserInfoDto updateUser(UserUpdateRequest dto, HttpServletResponse response, org.springframework.security.core.userdetails.User user) {
         Optional<User> findEmail = userRepository.findByEmailOrUsername(dto.getEmail(), dto.getUsername());
         if (findEmail.isPresent()) {
             throw new AlreadyExistedUserException("Email or Name");
         }
-        User currentUser = getCurrentUser();
-        User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> new UserNotFoundException("User ID : " + currentUser.getId() + " not found."));
-        user.changeInfo(
+        User currentUser = this.getCurrentUser(user.getUsername());
+        currentUser.changeInfo(
                 dto.getUsername(), dto.getEmail()
                 , dto.getPassword(), passwordEncoder
                 , dto.getBio(), dto.getImage()
         ); // TODO - 깔끔하게 만들 수 있을 것 같은데 모르겠음. 나중에 고치기 .. dto를 넘기기에는 Entity에 특정 dto를 넣고싶진 않음
 
         if (!currentUser.getUsername().equals(dto.getUsername())) {
-            this.createNewAuthentication(user, response);
+            this.createNewAuthentication(currentUser, response);
         }
 
-        return UserInfoDto.of(user);
+        return UserInfoDto.of(currentUser);
     }
 
-    private User getCurrentUser() {
-        UserDetails userDetails = customUserDetailsService.getCurrentUserDetails();
-        String email = userDetails.getUsername();
+    private void confirmPassword(UserLoginDto dto, User user) {
+        boolean matched = user.isMatched(dto.getPassword(), user.getPassword(), passwordEncoder);
+        if (!matched) {
+            throw new PasswordNotMatchedException(user.getEmail());
+        }
+    }
+
+    private User getCurrentUser(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email + " not found."));
     }
 
     private void createNewAuthentication(User user, HttpServletResponse response) {
-        UserDetails userDetails = customUserDetailsService.loadUserById(user.getId());
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, "", Collections.emptyList()));
         this.createToken(user, response);
     }

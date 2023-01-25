@@ -54,11 +54,11 @@ public class Article extends BaseUpdateInfoEntity {
         this.author = author;
     }
 
-    private String setSlug(String title) {
+    public String setSlug(String title) {
         UUID uuid = UUID.randomUUID();
         String[] titleSplit = title.split(" ");
         if (titleSplit.length > 1) return titleSplit[0] + "-" + titleSplit[1] + "_" + uuid;
-        else return titleSplit[0];
+        else return titleSplit[0] + "_" + uuid;
     }
 
     public void editArticle(String title, String description, String body) {

@@ -1,5 +1,6 @@
 package ifi.realworld.common.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
@@ -29,8 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
-            // TODO - custom exception으로 잡아줘야할 것이 있는지?
+            log.info("JwtFilter doFilterInternal Exception - " + e.getMessage());
             SecurityContextHolder.clearContext();
             return;
         }
