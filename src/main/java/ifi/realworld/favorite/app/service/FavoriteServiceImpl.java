@@ -18,6 +18,7 @@ import ifi.realworld.tag.domain.Tag;
 import ifi.realworld.user.domain.User;
 import ifi.realworld.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,8 +40,8 @@ public class FavoriteServiceImpl implements FavoriteService {
     // TODO - 여기 과정이 너무 난잡한듯............. Entity 구상부터 틀려먹은 느낌
 
     @Override
-    public SingleArticleDto favoriteArticle(String email, String slug) {
-        User currentUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    public SingleArticleDto favoriteArticle(String slug) {
+        User currentUser = userRepository.findByEmail(getCurrentUserEmail()).orElseThrow(UserNotFoundException::new);
         Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
         List<Comment> commentList = getCommentList(article);
 
@@ -65,8 +66,8 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public SingleArticleDto unfavoriteArticle(String email, String slug) {
-        User currentUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    public SingleArticleDto unfavoriteArticle(String slug) {
+        User currentUser = userRepository.findByEmail(getCurrentUserEmail()).orElseThrow(UserNotFoundException::new);
         Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
         List<Comment> commentList = getCommentList(article);
 
@@ -85,6 +86,10 @@ public class FavoriteServiceImpl implements FavoriteService {
                 .favorited(false)
                 .favoritesCount(favoriteCount)
                 .build();
+    }
+
+    private String getCurrentUserEmail() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     private List<Comment> getCommentList(Article article) {

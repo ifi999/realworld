@@ -9,6 +9,7 @@ import ifi.realworld.user.domain.repository.FollowRepository;
 import ifi.realworld.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,16 +24,16 @@ public class ProfileServiceImpl implements ProfileService {
     private final FollowJpaRepository followJpaRepository;
 
     @Override
-    public ProfileDto getProfile(String username, org.springframework.security.core.userdetails.User user) {
-        User currentUser = getCurrentUser(user.getUsername());
+    public ProfileDto getProfile(String username) {
+        User currentUser = getCurrentUser(getCurrentUserEmail());
         User findUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username + " not found."));
         boolean followed = followJpaRepository.isFollow(currentUser.getId(), findUser.getId());
         return ProfileDto.of(findUser, followed);
     }
 
     @Override
-    public ProfileDto followUser(String username, org.springframework.security.core.userdetails.User user) {
-        User currentUser = getCurrentUser(user.getUsername());
+    public ProfileDto followUser(String username) {
+        User currentUser = getCurrentUser(getCurrentUserEmail());
         User findUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username + " not found."));
         FollowRelation followRelation = new FollowRelation(currentUser.getId(), findUser.getId());
         followRepository.save(followRelation);
@@ -40,11 +41,15 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public ProfileDto unFollowUser(String username, org.springframework.security.core.userdetails.User user) {
-        User currentUser = getCurrentUser(user.getUsername());
+    public ProfileDto unFollowUser(String username) {
+        User currentUser = getCurrentUser(getCurrentUserEmail());
         User findUser = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username + " not found."));
         followJpaRepository.unFollow(currentUser.getId(), findUser.getId());
         return ProfileDto.of(findUser, false);
+    }
+
+    private String getCurrentUserEmail() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     private User getCurrentUser(String email) {

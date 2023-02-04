@@ -65,17 +65,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfoDto getCurrentUserInfo(org.springframework.security.core.userdetails.User currentUser) {
-        return UserInfoDto.of(this.getCurrentUser(currentUser.getUsername()));
+    public UserInfoDto getCurrentUserInfo() {
+        return UserInfoDto.of(this.getCurrentUser(getCurrentUserEmail()));
     }
 
     @Override
-    public UserInfoDto updateUser(UserUpdateRequest dto, HttpServletResponse response, org.springframework.security.core.userdetails.User user) {
+    public UserInfoDto updateUser(UserUpdateRequest dto, HttpServletResponse response) {
         Optional<User> findEmail = userRepository.findByEmailOrUsername(dto.getEmail(), dto.getUsername());
         if (findEmail.isPresent()) {
             throw new AlreadyExistedUserException("Email or Name");
         }
-        User currentUser = this.getCurrentUser(user.getUsername());
+        User currentUser = this.getCurrentUser(getCurrentUserEmail());
         currentUser.changeInfo(
                 dto.getUsername(), dto.getEmail()
                 , dto.getPassword(), passwordEncoder
@@ -94,6 +94,10 @@ public class UserServiceImpl implements UserService {
         if (!matched) {
             throw new PasswordNotMatchedException(user.getEmail());
         }
+    }
+
+    private String getCurrentUserEmail() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     private User getCurrentUser(String email) {

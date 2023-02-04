@@ -22,6 +22,7 @@ import ifi.realworld.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,8 +47,8 @@ public class ArticleServiceImpl implements ArticleService {
     private final CommentRepository commentRepository;
 
     @Override
-    public SingleArticleDto createArticles(ArticleCreateRequest dto, org.springframework.security.core.userdetails.User user) {
-        User author = getAuthor(user.getUsername());
+    public SingleArticleDto createArticles(ArticleCreateRequest dto) {
+        User author = getAuthor(getCurrentUserEmail());
         Article article = Article.builder()
                         .title(dto.getTitle())
                         .description(dto.getDescription())
@@ -77,7 +78,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public SingleArticleDto getArticle(String slug, org.springframework.security.core.userdetails.User user) {
+    public SingleArticleDto getArticle(String slug) {
+        String currentUserEmail = getCurrentUserEmail();
+
         Article article = getArticleBySlug(slug);
         List<ArticleTag> articleTags = articleTagJpaRepository.findByArticleId(article.getId());
         List<Tag> tags = articleTags.stream()
@@ -85,7 +88,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .collect(Collectors.toList());
         List<Comment> commentList = getCommentList(article);
 
-        Boolean favorited = getFavorited(article, user.getUsername());
+        Boolean favorited = getFavorited(article, currentUserEmail);
         long favoriteCount = favoriteJpaRepository.articleFavoriteCount(article.getId());
 
         return SingleArticleDto.builder()
@@ -99,7 +102,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public SingleArticleDto updateArticle(String slug, ArticleUpdateRequest dto, org.springframework.security.core.userdetails.User user) {
+    public SingleArticleDto updateArticle(String slug, ArticleUpdateRequest dto) {
         Article article = getArticleBySlug(slug);
         article.editArticle(dto.getTitle(), dto.getDescription(), dto.getBody());
         articleTagRepository.deleteAllInBatch(article.getTagList());
@@ -112,7 +115,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         List<Comment> commentList = getCommentList(article);
 
-        Boolean favorited = getFavorited(article, user.getUsername());
+        Boolean favorited = getFavorited(article, getCurrentUserEmail());
         long favoriteCount = favoriteJpaRepository.articleFavoriteCount(article.getId());
 
         return SingleArticleDto.builder()
@@ -129,6 +132,10 @@ public class ArticleServiceImpl implements ArticleService {
     public void deleteArticle(String slug) {
         Article article = getArticleBySlug(slug);
         articleRepository.delete(article);
+    }
+
+    private String getCurrentUserEmail() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 
     private List<Comment> getCommentList(Article article) {
