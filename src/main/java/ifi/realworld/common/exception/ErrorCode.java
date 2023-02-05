@@ -4,12 +4,11 @@ public enum ErrorCode {
     ALREADY_EXISTED_USER,
     PASSWORD_NOT_MATCHED,
     INVALID_EMAIL,
-    USER_NOT_FOUND,
-    AlreadyRegistArticleFavorite,
-    ArticleNotFoundException,
-    NotFoundArticleFavoriteRelationException,
-    NotFoundCommentException,
-    UserNotFoundException
+    ALREADY_REGIST_ARTICLE_FAVORITE,
+    ARTICLE_NOT_FOUND,
+    ARTICLE_FAVORITE_RELATION_NOT_FOUND,
+    COMMENT_NOT_FOUND,
+    USER_NOT_FOUND
     ;
 
 }
