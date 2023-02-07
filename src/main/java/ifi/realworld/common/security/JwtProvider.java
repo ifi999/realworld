@@ -93,14 +93,19 @@ public class JwtProvider {
             return !claims.getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT.");
+            log.error("token : {}", token);
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT.");
+            log.error("token : {}", token);
         } catch (ClaimJwtException e) {
             log.info("Not Expected JWT claims.");
+            log.error("token : {}", token);
         } catch (IllegalArgumentException e) {
             log.info("IllegalArgument JWT.");
+            log.error("token : {}", token);
         } catch (MalformedJwtException e) {
             log.info("Invalid JWT.");
+            log.error("token : {}", token);
         } catch (Exception e) {
             log.info("validateToken Exception.");
             log.error("token : {}", token);
