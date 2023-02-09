@@ -1,5 +1,6 @@
 package ifi.realworld.common.security;
 
+import ifi.realworld.common.exception.UserAuthenticationException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -93,26 +94,30 @@ public class JwtProvider {
             return !claims.getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT.");
-            log.error("token : {}", token);
+            // 단순 만료는 log 필요없을 것이라고 생각함
+            throw new UserAuthenticationException("Throw expired token exception", e);
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT.");
             log.error("token : {}", token);
+            throw new UserAuthenticationException("Throw unsupported token exception", e);
         } catch (ClaimJwtException e) {
             log.info("Not Expected JWT claims.");
             log.error("token : {}", token);
+            throw new UserAuthenticationException("Throw not expected token exception", e);
         } catch (IllegalArgumentException e) {
             log.info("IllegalArgument JWT.");
             log.error("token : {}", token);
+            throw new UserAuthenticationException("Throw illegal token exception", e);
         } catch (MalformedJwtException e) {
             log.info("Invalid JWT.");
             log.error("token : {}", token);
+            throw new UserAuthenticationException("Throw invalid token exception", e);
         } catch (Exception e) {
             log.info("validateToken Exception.");
             log.error("token : {}", token);
             log.error("Exception Message : {}", e.getMessage());
+            throw new UserAuthenticationException("Throw exception", e);
         }
-
-        return false;
     }
 
 }

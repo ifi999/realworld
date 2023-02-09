@@ -1,5 +1,6 @@
 package ifi.realworld.common.security;
 
+import ifi.realworld.common.exception.UserAuthenticationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +30,10 @@ public class JwtFilter extends OncePerRequestFilter {
                 Authentication auth = jwtProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
+        }
+        catch (UserAuthenticationException e) {
+            SecurityContextHolder.clearContext();
+            throw new UserAuthenticationException(e.getMessage(), e);
         }
         catch (Exception e) {
             log.info("JwtFilter doFilterInternal Exception - " + e.getMessage());
