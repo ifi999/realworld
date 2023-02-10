@@ -1,9 +1,10 @@
-package ifi.realworld.common.security;
+package ifi.realworld.common.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ifi.realworld.common.exception.ApiError;
 import ifi.realworld.common.exception.ErrorResponse;
 import ifi.realworld.common.exception.UserAuthenticationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -34,7 +36,8 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             response.getWriter().write(objectMapper.writeValueAsString(new ErrorResponse(error)));
         }
         catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            log.error("setErrorResponse - IOException");
         }
     }
 }
