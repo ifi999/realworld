@@ -1,9 +1,9 @@
 package ifi.realworld.common.config;
 
-import ifi.realworld.common.security.JwtAccessDeniedHandler;
-import ifi.realworld.common.security.JwtAuthenticationEntryPoint;
-import ifi.realworld.common.security.JwtFilterConfigurer;
-import ifi.realworld.common.security.JwtProvider;
+import ifi.realworld.common.security.jwt.JwtAccessDeniedHandler;
+import ifi.realworld.common.security.jwt.JwtAuthenticationEntryPoint;
+import ifi.realworld.common.security.jwt.JwtFilterConfigurer;
+import ifi.realworld.common.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;

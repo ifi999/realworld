@@ -5,7 +5,7 @@ import ifi.realworld.common.exception.InvalidEmailException;
 import ifi.realworld.common.exception.PasswordNotMatchedException;
 import ifi.realworld.common.exception.UserNotFoundException;
 import ifi.realworld.common.security.CustomUserDetailsService;
-import ifi.realworld.common.security.JwtProvider;
+import ifi.realworld.common.security.jwt.JwtProvider;
 import ifi.realworld.user.api.UserPasswordEncoder;
 import ifi.realworld.user.api.dto.*;
 import ifi.realworld.user.domain.User;

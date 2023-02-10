@@ -1,7 +1,7 @@
 package ifi.realworld.user.app.service;
 
 import ifi.realworld.common.exception.UserNotFoundException;
-import ifi.realworld.common.security.JwtProvider;
+import ifi.realworld.common.security.jwt.JwtProvider;
 import ifi.realworld.user.api.UserPasswordEncoder;
 import ifi.realworld.user.domain.User;
 import ifi.realworld.user.domain.repository.UserRepository;

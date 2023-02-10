@@ -1,6 +1,7 @@
-package ifi.realworld.common.security;
+package ifi.realworld.common.security.jwt;
 
 import ifi.realworld.common.exception.UserAuthenticationException;
+import ifi.realworld.common.security.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

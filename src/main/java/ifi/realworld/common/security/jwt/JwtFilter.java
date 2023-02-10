@@ -1,4 +1,4 @@
-package ifi.realworld.common.security;
+package ifi.realworld.common.security.jwt;
 
 import ifi.realworld.common.exception.UserAuthenticationException;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
             throw new UserAuthenticationException(e.getMessage(), e);
         }
         catch (Exception e) {
-            log.info("JwtFilter doFilterInternal Exception - " + e.getMessage());
+            log.error("JwtFilter doFilterInternal Exception - " + e.getMessage());
             SecurityContextHolder.clearContext();
             return;
         }

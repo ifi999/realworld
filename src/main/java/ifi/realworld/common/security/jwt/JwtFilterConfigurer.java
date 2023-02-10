@@ -1,4 +1,4 @@
-package ifi.realworld.common.security;
+package ifi.realworld.common.security.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;

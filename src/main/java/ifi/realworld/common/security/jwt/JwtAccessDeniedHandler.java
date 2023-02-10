@@ -1,4 +1,4 @@
-package ifi.realworld.common.security;
+package ifi.realworld.common.security.jwt;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
