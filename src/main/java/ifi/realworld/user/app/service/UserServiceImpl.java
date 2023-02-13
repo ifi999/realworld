@@ -10,15 +10,15 @@ import ifi.realworld.user.api.UserPasswordEncoder;
 import ifi.realworld.user.api.dto.*;
 import ifi.realworld.user.domain.User;
 import ifi.realworld.user.domain.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.Optional;
@@ -26,13 +26,28 @@ import java.util.Optional;
 @Slf4j
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserPasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final CustomUserDetailsService customUserDetailsService;
+    private final String header;
+    private final long validitySeconds;
+
+    public UserServiceImpl(UserRepository userRepository
+            , UserPasswordEncoder passwordEncoder
+            , JwtProvider jwtProvider
+            , CustomUserDetailsService customUserDetailsService
+            , @Value("${jwt.header}") String header
+            , @Value("${jwt.validity-in-seconds}") long validitySeconds) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtProvider = jwtProvider;
+        this.customUserDetailsService = customUserDetailsService;
+        this.header = header;
+        this.validitySeconds = validitySeconds;
+    }
 
     @Override
     public UserCreateResponse createUser(UserCreateRequest dto) {
@@ -116,10 +131,14 @@ public class UserServiceImpl implements UserService {
     }
 
     private void saveTokenInCookie(String token, HttpServletResponse response) {
-        Cookie cookie = new Cookie("AccessToken", token);
-        cookie.setMaxAge(60*60*24);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from(header, token)
+                .maxAge(validitySeconds)
+                .path("/")
+                .secure(true)
+                .httpOnly(true)
+                .sameSite("None")
+                .build();
+
+        response.setHeader("Set-Cookie", cookie.toString());
     }
 }

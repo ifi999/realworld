@@ -12,8 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Collections;
@@ -79,10 +79,20 @@ public class JwtProvider {
     }
 
     public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader(header);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+        Cookie[] cookies = req.getCookies();
+        if(cookies != null) {
+            for(Cookie cookie : cookies) {
+                if (cookie.getName().equals(header)) {
+                    return cookie.getValue();
+                }
+            }
         }
+
+//        String bearerToken = req.getHeader(header);
+//        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+//            return bearerToken.substring(7);
+//        }
+
         return null;
     }
 
@@ -93,6 +103,9 @@ public class JwtProvider {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+
+            // TODO - 토큰 갱신 기능
+
             return !claims.getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT.");
