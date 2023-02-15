@@ -7,8 +7,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // TODO - 여러개를 만들기는 했는데, 너무 쓸데없이 많이 만든 것 같음. 줄일 방향 생각해보기
-    
     @ExceptionHandler(AlreadyExistedUserException.class)
     public ErrorResponse handleAlreadyExistedUserException() {
         ApiError error = new ApiError(ErrorCode.ALREADY_EXISTED_USER.toString());
