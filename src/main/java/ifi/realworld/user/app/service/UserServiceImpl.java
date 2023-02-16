@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
                 .path("/")
                 .secure(true)
                 .httpOnly(true)
-                .sameSite("None")
+                .sameSite("Lax")
                 .build();
 
         response.setHeader("Set-Cookie", cookie.toString());
