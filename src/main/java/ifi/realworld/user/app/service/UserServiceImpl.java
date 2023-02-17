@@ -19,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.Optional;
@@ -141,4 +143,25 @@ public class UserServiceImpl implements UserService {
 
         response.setHeader("Set-Cookie", cookie.toString());
     }
+
+    private void deleteCookie(HttpServletRequest request, HttpServletResponse response, String token) {
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null && cookies.length > 0) {
+            for(Cookie cookie : cookies) {
+                if (header.equals(cookie.getName())) {
+                    ResponseCookie responseCookie = ResponseCookie.from(header, token)
+                            .maxAge(0)
+                            .path("/")
+                            .secure(true)
+                            .httpOnly(true)
+                            .sameSite("Lax")
+                            .build();
+
+                    response.setHeader("Set-Cookie", responseCookie.toString());
+                }
+            }
+        }
+    }
+
 }
