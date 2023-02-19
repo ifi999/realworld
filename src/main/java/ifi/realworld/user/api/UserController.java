@@ -27,12 +27,12 @@ public class UserController {
         return userService.login(dto, response);
     }
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     public UserInfoDto getCurrentUser() {
         return userService.getCurrentUserInfo();
     }
 
-    @PutMapping("/user")
+    @PutMapping("/users")
     public UserInfoDto updateUser(
             @RequestBody @Valid final UserUpdateRequest dto
             , HttpServletResponse response) {
