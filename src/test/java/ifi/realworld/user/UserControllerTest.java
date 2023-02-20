@@ -20,7 +20,7 @@ class UserControllerTest extends ApiTest {
     MockMvc mvc;
 
     @Test
-    public void createUserTest() throws Exception {
+    public void createUser_IsOk() throws Exception {
         UserCreateRequest request = new UserCreateRequest();
         ReflectionTestUtils.setField(request, "username", "테스트");
         ReflectionTestUtils.setField(request, "email", "test2@hello.com");
@@ -37,7 +37,7 @@ class UserControllerTest extends ApiTest {
     }
 
     @Test
-    public void loginTest() throws Exception {
+    public void login_IsOk() throws Exception {
         UserLoginDto request = new UserLoginDto("test@hello.com", "1234");
 
         // TODO - isOK는 되는데, andExpect(jsonPath("$.username").exists()) 같은 것들은 검증이 필요없는지?
@@ -51,7 +51,16 @@ class UserControllerTest extends ApiTest {
     }
 
     @Test
-    public void getUserTest() throws Exception {
+    public void getUser_Is401() throws Exception {
+        mvc.perform(
+                        get("/api/users")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().is(401));
+    }
+
+    @Test
+    public void getUser_IsOk() throws Exception {
         mvc.perform(
                 get("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -61,7 +70,16 @@ class UserControllerTest extends ApiTest {
     }
 
     @Test
-    public void updateUserTest() throws Exception {
+    public void updateUser_Is401() throws Exception {
+        mvc.perform(
+                        put("/api/users")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().is(401));
+    }
+
+    @Test
+    public void updateUser_IsOk() throws Exception {
         mvc.perform(
                 put("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
