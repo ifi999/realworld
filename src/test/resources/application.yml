@@ -2,14 +2,14 @@ spring:
   profiles:
     active: test
   datasource:
-    url: jdbc:h2:tcp://localhost/~/realworld
+    url: jdbc:h2:mem:testdb
     username: sa
     password:
     driver-class-name: org.h2.Driver
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
