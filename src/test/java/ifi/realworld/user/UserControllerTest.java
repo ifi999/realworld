@@ -5,22 +5,15 @@ import ifi.realworld.ApiTest;
 import ifi.realworld.user.api.dto.UserCreateRequest;
 import ifi.realworld.user.api.dto.UserLoginDto;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Transactional
-@ExtendWith(SpringExtension.class)
-@AutoConfigureMockMvc
 class UserControllerTest extends ApiTest {
 
     @Autowired

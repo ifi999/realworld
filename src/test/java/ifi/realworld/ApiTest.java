@@ -5,14 +5,21 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@Transactional
+@ExtendWith(SpringExtension.class)
+@AutoConfigureMockMvc
 @SpringBootTest
 public class ApiTest {
 
