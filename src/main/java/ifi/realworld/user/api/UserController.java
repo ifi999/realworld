@@ -3,6 +3,7 @@ package ifi.realworld.user.api;
 import ifi.realworld.user.api.dto.*;
 import ifi.realworld.user.app.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,25 +19,29 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/users")
-    public UserCreateResponse createUser(@RequestBody @Valid final UserCreateRequest dto) {
-        return userService.createUser(dto);
+    public ResponseEntity<UserCreateResponse> createUser(@RequestBody @Valid final UserCreateRequest dto) {
+        UserCreateResponse response = userService.createUser(dto);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/users/login")
-    public UserLoginDto login(@RequestBody @Valid final UserLoginDto dto, HttpServletResponse response) {
-        return userService.login(dto, response);
+    public ResponseEntity<UserLoginDto> login(@RequestBody @Valid final UserLoginDto dto, HttpServletResponse response) {
+        UserLoginDto responseDto = userService.login(dto, response);
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/users")
-    public UserInfoDto getCurrentUser() {
-        return userService.getCurrentUserInfo();
+    public ResponseEntity<UserInfoDto> getCurrentUser() {
+        UserInfoDto response = userService.getCurrentUserInfo();
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/users")
-    public UserInfoDto updateUser(
+    public ResponseEntity<UserInfoDto> updateUser(
             @RequestBody @Valid final UserUpdateRequest dto
             , HttpServletResponse response) {
-        return userService.updateUser(dto, response);
+        UserInfoDto responseDto = userService.updateUser(dto, response);
+        return ResponseEntity.ok(responseDto);
     }
 
 }

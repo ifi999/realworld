@@ -8,6 +8,7 @@ import ifi.realworld.article.app.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,24 +23,28 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping("/articles")
-    public SingleArticleDto createArticle(@RequestBody @Valid final ArticleCreateRequest dto) {
-        return articleService.createArticles(dto);
+    public ResponseEntity<SingleArticleDto> createArticle(@RequestBody @Valid final ArticleCreateRequest dto) {
+        SingleArticleDto response = articleService.createArticles(dto);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/articles")
-    public Page<SingleArticleDto> getArticles(final ArticleSearchDto dto, Pageable pageable) {
-        return articleService.getArticles(dto, pageable);
+    public ResponseEntity<Page<SingleArticleDto>> getArticles(final ArticleSearchDto dto, Pageable pageable) {
+        Page<SingleArticleDto> response = articleService.getArticles(dto, pageable);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/articles/{slug}")
-    public SingleArticleDto getArticle(@PathVariable String slug) {
-        return articleService.getArticle(slug);
+    public ResponseEntity<SingleArticleDto> getArticle(@PathVariable String slug) {
+        SingleArticleDto response = articleService.getArticle(slug);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/articles/{slug}")
-    public SingleArticleDto updateArticle(@PathVariable String slug
+    public ResponseEntity<SingleArticleDto> updateArticle(@PathVariable String slug
             , @RequestBody @Valid final ArticleUpdateRequest dto) {
-        return articleService.updateArticle(slug, dto);
+        SingleArticleDto response = articleService.updateArticle(slug, dto);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/articles/{slug}")
