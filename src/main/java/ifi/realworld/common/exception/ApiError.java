@@ -14,7 +14,7 @@ public class ApiError {
         body = errors;
     }
 
-    public ApiError(String error) {
+    public ApiError(String... error) {
         body = Arrays.asList(error);
     }
 
