@@ -30,10 +30,9 @@ class UserControllerTest extends ApiTest {
                 post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(request))
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").exists())
-                .andExpect(jsonPath("$.username").value(request.getUsername()));
+        ).andExpect(status().isOk())
+        .andExpect(jsonPath("$.username").exists())
+        .andExpect(jsonPath("$.username").value(request.getUsername()));
     }
 
     @Test
@@ -46,17 +45,15 @@ class UserControllerTest extends ApiTest {
                 post("/api/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(request))
-        )
-                .andExpect(status().isOk());
+        ).andExpect(status().isOk());
     }
 
     @Test
     public void getUser_Is401() throws Exception {
         mvc.perform(
-                        get("/api/users")
-                                .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().is(401));
+                get("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().is(401));
     }
 
     @Test
@@ -65,17 +62,15 @@ class UserControllerTest extends ApiTest {
                 get("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(super.JWT_COOKIE)
-        )
-                .andExpect(status().isOk());
+        ).andExpect(status().isOk());
     }
 
     @Test
     public void updateUser_Is401() throws Exception {
         mvc.perform(
-                        put("/api/users")
-                                .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().is(401));
+                put("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().is(401));
     }
 
     @Test
@@ -84,7 +79,6 @@ class UserControllerTest extends ApiTest {
                 put("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .cookie(super.JWT_COOKIE)
-        )
-                .andExpect(status().isOk());
+        ).andExpect(status().isOk());
     }
 }
