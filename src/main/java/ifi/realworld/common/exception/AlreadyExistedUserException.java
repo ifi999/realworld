@@ -1,8 +1,20 @@
 package ifi.realworld.common.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class AlreadyExistedUserException extends DefaultCustomException {
 
     private static final long serialVersionUID = 7317961365126506972L;
+
+    @Override
+    public HttpStatus customExceptionStatus() {
+        return HttpStatus.BAD_REQUEST;
+    }
+
+    @Override
+    public ErrorCode customExceptionMessage() {
+        return ErrorCode.ALREADY_EXISTED_USER;
+    }
 
     public AlreadyExistedUserException() {
         super();

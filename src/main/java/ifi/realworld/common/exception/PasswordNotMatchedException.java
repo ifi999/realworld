@@ -1,8 +1,20 @@
 package ifi.realworld.common.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class PasswordNotMatchedException extends DefaultCustomException {
 
     private static final long serialVersionUID = -4841340797703200138L;
+
+    @Override
+    public HttpStatus customExceptionStatus() {
+        return HttpStatus.BAD_REQUEST;
+    }
+
+    @Override
+    public ErrorCode customExceptionMessage() {
+        return ErrorCode.PASSWORD_NOT_MATCHED;
+    }
 
     public PasswordNotMatchedException() {
         super();

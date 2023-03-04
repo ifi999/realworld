@@ -1,8 +1,20 @@
 package ifi.realworld.common.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class InvalidEmailException extends DefaultCustomException {
 
     private static final long serialVersionUID = -4715011436700316770L;
+
+    @Override
+    public HttpStatus customExceptionStatus() {
+        return HttpStatus.BAD_REQUEST;
+    }
+
+    @Override
+    public ErrorCode customExceptionMessage() {
+        return ErrorCode.INVALID_EMAIL;
+    }
 
     public InvalidEmailException() {
         super();

@@ -1,6 +1,13 @@
 package ifi.realworld.common.exception;
 
+import org.springframework.http.HttpStatus;
+
 public abstract class DefaultCustomException extends RuntimeException {
+
+
+    public abstract HttpStatus customExceptionStatus();
+
+    public abstract ErrorCode customExceptionMessage();
 
     public DefaultCustomException() {
         super();
