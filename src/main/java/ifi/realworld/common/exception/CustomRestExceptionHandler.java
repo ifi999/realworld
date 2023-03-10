@@ -13,9 +13,19 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DefaultCustomException.class)
-    public ErrorResponse handleDefaultCustomException(DefaultCustomException e) {
+    public ResponseEntity<ErrorResponse> handleDefaultCustomException(DefaultCustomException e) {
         ApiError error = new ApiError(e.customExceptionStatus().toString(), e.customExceptionMessage().toString());
-        return new ErrorResponse(error);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ErrorResponse(error));
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ApiError error = new ApiError(ex.getLocalizedMessage(), ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ErrorResponse(error));
     }
 
 }
