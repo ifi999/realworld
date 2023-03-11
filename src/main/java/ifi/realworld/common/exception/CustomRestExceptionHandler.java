@@ -12,6 +12,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ApiError error = new ApiError(ex.getLocalizedMessage(), ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ErrorResponse(error));
+    }
     @ExceptionHandler(DefaultCustomException.class)
     public ResponseEntity<ErrorResponse> handleDefaultCustomException(DefaultCustomException e) {
         ApiError error = new ApiError(e.customExceptionStatus().toString(), e.customExceptionMessage().toString());
@@ -20,11 +27,11 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(new ErrorResponse(error));
     }
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ApiError error = new ApiError(ex.getLocalizedMessage(), ex.getMessage());
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(Exception e) {
+        ApiError error = new ApiError(e.getLocalizedMessage(), e.getMessage());
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse(error));
     }
 
