@@ -3,7 +3,7 @@ package ifi.realworld.common.security.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ifi.realworld.common.exception.ApiError;
 import ifi.realworld.common.exception.ErrorResponse;
-import ifi.realworld.common.exception.UserAuthenticationException;
+import ifi.realworld.common.exception.api.UserAuthenticationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

@@ -1,6 +1,6 @@
 package ifi.realworld.common.security.jwt;
 
-import ifi.realworld.common.exception.UserAuthenticationException;
+import ifi.realworld.common.exception.api.UserAuthenticationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

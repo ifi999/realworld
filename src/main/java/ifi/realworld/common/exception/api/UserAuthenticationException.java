@@ -1,4 +1,4 @@
-package ifi.realworld.common.exception;
+package ifi.realworld.common.exception.api;
 
 public class UserAuthenticationException extends RuntimeException {
     private static final long serialVersionUID = 4076256550380142367L;

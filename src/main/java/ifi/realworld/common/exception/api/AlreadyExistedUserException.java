@@ -1,5 +1,7 @@
-package ifi.realworld.common.exception;
+package ifi.realworld.common.exception.api;
 
+import ifi.realworld.common.exception.DefaultCustomException;
+import ifi.realworld.common.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
 
 public class AlreadyExistedUserException extends DefaultCustomException {
