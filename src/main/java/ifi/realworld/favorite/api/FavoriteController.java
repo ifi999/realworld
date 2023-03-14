@@ -15,9 +15,6 @@ public class FavoriteController {
 
     @PostMapping("/articles/{slug}/favorite")
     public ResponseEntity<SingleArticleDto> favoriteArticle(@PathVariable String slug) {
-        // TODO - SingleArticleDto는 Article domain의 dto인데 따로 favoriteReponse 같이 dto를 만들어줘야하나?
-        //        똑같은 내용일 것이라 재사용하고 싶은데
-
         SingleArticleDto response = favoriteService.favoriteArticle(slug);
         return ResponseEntity.ok(response);
     }
