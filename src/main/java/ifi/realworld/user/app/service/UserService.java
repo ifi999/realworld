@@ -12,5 +12,5 @@ public interface UserService {
 
     UserInfoDto getCurrentUserInfo();
 
-    UserInfoDto updateUser(UserUpdateRequest dto, HttpServletResponse response);
+    UserInfoDto changeUserInfo(UserUpdateRequest dto, HttpServletResponse response);
 }

@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfoDto updateUser(UserUpdateRequest dto, HttpServletResponse response) {
+    public UserInfoDto changeUserInfo(UserUpdateRequest dto, HttpServletResponse response) {
         Optional<User> findEmail = userRepository.findByEmailAndUsername(dto.getEmail(), dto.getUsername());
         if (findEmail.isPresent()) {
             throw new AlreadyExistedUserException("Email or Name");

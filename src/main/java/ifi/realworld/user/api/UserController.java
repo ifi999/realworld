@@ -37,10 +37,10 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    public ResponseEntity<UserInfoDto> updateUser(
+    public ResponseEntity<UserInfoDto> changeUserInfo(
             @RequestBody @Valid final UserUpdateRequest dto
             , HttpServletResponse response) {
-        UserInfoDto responseDto = userService.updateUser(dto, response);
+        UserInfoDto responseDto = userService.changeUserInfo(dto, response);
         return ResponseEntity.ok(responseDto);
     }
 
