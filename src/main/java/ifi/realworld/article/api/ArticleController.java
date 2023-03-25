@@ -41,9 +41,9 @@ public class ArticleController {
     }
 
     @PutMapping("/articles/{slug}")
-    public ResponseEntity<SingleArticleDto> updateArticle(@PathVariable String slug
+    public ResponseEntity<SingleArticleDto> changeArticleInfo(@PathVariable String slug
             , @RequestBody @Valid final ArticleUpdateRequest dto) {
-        SingleArticleDto response = articleService.updateArticle(slug, dto);
+        SingleArticleDto response = articleService.changeArticleInfo(slug, dto);
         return ResponseEntity.ok(response);
     }
 

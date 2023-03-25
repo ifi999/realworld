@@ -20,7 +20,7 @@ public class FavoriteController {
     }
 
     @DeleteMapping("/articles/{slug}/favorite")
-    public ResponseEntity<SingleArticleDto> unfavoriteArticle(@PathVariable String slug) {
+    public ResponseEntity<SingleArticleDto> unFavoriteArticle(@PathVariable String slug) {
         SingleArticleDto response = favoriteService.unfavoriteArticle(slug);
         return ResponseEntity.ok(response);
     }

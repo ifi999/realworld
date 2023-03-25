@@ -13,7 +13,7 @@ public interface ArticleService {
 
     Page<SingleArticleDto> getArticles(ArticleSearchDto dto, Pageable pageable);
 
-    SingleArticleDto updateArticle(String slug, ArticleUpdateRequest dto);
+    SingleArticleDto changeArticleInfo(String slug, ArticleUpdateRequest dto);
 
     void deleteArticle(String slug);
 

@@ -102,7 +102,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public SingleArticleDto updateArticle(String slug, ArticleUpdateRequest dto) {
+    public SingleArticleDto changeArticleInfo(String slug, ArticleUpdateRequest dto) {
         Article article = getArticleBySlug(slug);
         article.editArticle(dto.getTitle(), dto.getDescription(), dto.getBody());
         articleTagRepository.deleteAllInBatch(article.getTagList());
