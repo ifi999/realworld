@@ -37,8 +37,6 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final ArticleTagJpaRepository articleTagJpaRepository;
     private final CommentRepository commentRepository;
 
-    // TODO - 여기 과정이 너무 난잡한듯............. Entity 구상부터 틀려먹은 느낌
-
     @Override
     public SingleArticleDto favoriteArticle(String slug) {
         User currentUser = userRepository.findByEmail(getCurrentUserEmail()).orElseThrow(UserNotFoundException::new);

@@ -56,8 +56,7 @@ public class ArticleServiceImpl implements ArticleService {
                         .author(author)
                         .build();
         Article savedArticle = articleRepository.save(article);
-        // TODO - 1. 매번 중복 태그 찾는 쿼리 돌리기가 좀 그런데 더 좋게 어떻게 해야할 지 모르겠음. 알아보기
-        //      - 2. tags 이상함. Entity에서 처리해야할 것 같은데 이것도 어떻게 해야할 지 모르겠음.
+
         List<String> tagList = dto.getTagList();
         List<Tag> tags = new ArrayList<>();
         setArticleTag(article, tagList, tags);
@@ -106,7 +105,6 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = getArticleBySlug(slug);
         article.editArticle(dto.getTitle(), dto.getDescription(), dto.getBody());
         articleTagRepository.deleteAllInBatch(article.getTagList());
-        // TODO - tagList를 변경감지로 하고 싶었는데 못하였음. 구조의 문제인지 내가 방식을 못 찾아낸건지 모르겠음
 
         List<String> tagList = dto.getTagList();
         List<Tag> tags = new ArrayList<>();

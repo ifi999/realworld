@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
                 dto.getUsername(), dto.getEmail()
                 , dto.getPassword(), passwordEncoder
                 , dto.getBio(), dto.getImage()
-        ); // TODO - 깔끔하게 만들 수 있을 것 같은데 모르겠음. 나중에 고치기 .. dto를 넘기기에는 Entity에 특정 dto를 넣고싶진 않음
+        );
 
         if (!currentUser.getUsername().equals(dto.getUsername())) {
             this.createNewAuthentication(currentUser, response);
