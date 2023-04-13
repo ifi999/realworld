@@ -6,16 +6,10 @@ import ifi.realworld.user.api.UserPasswordEncoder;
 import ifi.realworld.user.api.dto.UserCreateRequest;
 import ifi.realworld.user.api.dto.UserCreateResponse;
 import ifi.realworld.user.app.service.UserService;
-import ifi.realworld.user.app.service.UserServiceImpl;
-import ifi.realworld.user.domain.User;
 import ifi.realworld.user.domain.repository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -47,7 +41,7 @@ public class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        userService = new UserServiceImpl(userRepository, userPasswordEncoder, jwtProvider, userDetailsService, header, validitySeconds);
+        userService = new UserService(userRepository, userPasswordEncoder, jwtProvider, userDetailsService, header, validitySeconds);
     }
 
     @Test
