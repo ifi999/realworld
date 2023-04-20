@@ -9,25 +9,25 @@ import org.springframework.web.bind.annotation.*;
 
 @Transactional
 @RestController
-@RequestMapping("/api/profiles")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class ProfileController {
 
     private final ProfileService profileService;
 
-    @GetMapping("/{username}")
+    @GetMapping("/profiles/{username}")
     public ResponseEntity<ProfileDto> getProfile(@PathVariable String username) {
         ProfileDto response = profileService.getProfile(username);
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/{username}/follow")
+    @PostMapping("/profiles/{username}/follow")
     public ResponseEntity<ProfileDto> followUser(@PathVariable String username) {
         ProfileDto response = profileService.followUser(username);
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{username}/follow")
+    @DeleteMapping("/profiles/{username}/follow")
     public ResponseEntity<ProfileDto> unFollowUser(@PathVariable String username) {
         ProfileDto response = profileService.unFollowUser(username);
         return ResponseEntity.ok(response);
