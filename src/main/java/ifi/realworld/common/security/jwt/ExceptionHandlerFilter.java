@@ -36,7 +36,6 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             response.getWriter().write(objectMapper.writeValueAsString(new ErrorResponse(error)));
         }
         catch (IOException e) {
-//            e.printStackTrace();
             log.error("setErrorResponse - IOException");
         }
     }
