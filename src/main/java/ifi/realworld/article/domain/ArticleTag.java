@@ -1,6 +1,6 @@
 package ifi.realworld.article.domain;
 
-import ifi.realworld.common.entity.BaseCreateInfoEntity;
+import ifi.realworld.utils.entity.BaseCreateInfoEntity;
 import ifi.realworld.tag.domain.Tag;
 import lombok.AccessLevel;
 import lombok.Getter;

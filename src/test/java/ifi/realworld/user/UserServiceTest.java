@@ -1,7 +1,7 @@
 package ifi.realworld.user;
 
-import ifi.realworld.common.security.CustomUserDetailsService;
-import ifi.realworld.common.security.jwt.JwtProvider;
+import ifi.realworld.utils.security.CustomUserDetailsService;
+import ifi.realworld.utils.security.jwt.JwtProvider;
 import ifi.realworld.user.api.UserPasswordEncoder;
 import ifi.realworld.user.api.dto.UserCreateRequest;
 import ifi.realworld.user.api.dto.UserCreateResponse;

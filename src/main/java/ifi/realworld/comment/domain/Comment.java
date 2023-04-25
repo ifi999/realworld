@@ -2,7 +2,7 @@ package ifi.realworld.comment.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import ifi.realworld.article.domain.Article;
-import ifi.realworld.common.entity.BaseUpdateInfoEntity;
+import ifi.realworld.utils.entity.BaseUpdateInfoEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

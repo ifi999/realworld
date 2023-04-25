@@ -1,7 +1,7 @@
 package ifi.realworld.article.domain;
 
 import ifi.realworld.comment.domain.Comment;
-import ifi.realworld.common.entity.BaseUpdateInfoEntity;
+import ifi.realworld.utils.entity.BaseUpdateInfoEntity;
 import ifi.realworld.user.domain.User;
 import lombok.*;
 

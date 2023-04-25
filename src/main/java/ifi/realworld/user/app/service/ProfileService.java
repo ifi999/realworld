@@ -1,6 +1,6 @@
 package ifi.realworld.user.app.service;
 
-import ifi.realworld.common.exception.api.UserNotFoundException;
+import ifi.realworld.utils.exception.api.UserNotFoundException;
 import ifi.realworld.user.api.dto.ProfileDto;
 import ifi.realworld.user.domain.FollowRelation;
 import ifi.realworld.user.domain.User;

@@ -1,6 +1,6 @@
 package ifi.realworld.user.domain;
 
-import ifi.realworld.common.entity.BaseUpdateInfoEntity;
+import ifi.realworld.utils.entity.BaseUpdateInfoEntity;
 import ifi.realworld.user.api.UserPasswordEncoder;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
