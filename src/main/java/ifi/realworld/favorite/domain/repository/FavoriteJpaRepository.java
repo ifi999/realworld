@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 
+import java.util.Optional;
+
 import static ifi.realworld.favorite.domain.QFavorite.favorite;
 
 @Repository
@@ -28,19 +30,18 @@ public class FavoriteJpaRepository {
                 .fetchOne();
     }
 
-    public Boolean isFavorited(Long articleId, Long userId) {
-        Favorite favorited = findByArticleAndUser(articleId, userId);
-        return favorited == null ? false : true;
+    public boolean isFavorited(Long articleId, Long userId) {
+        return findByArticleAndUser(articleId, userId).isPresent();
     }
 
-    public Favorite findByArticleAndUser(Long articleId, Long userId) {
-        return queryFactory
+    public Optional<Favorite> findByArticleAndUser(Long articleId, Long userId) {
+        return Optional.ofNullable(queryFactory
                 .selectFrom(favorite)
                 .where(
                         favorite.article.id.eq(articleId),
                         favorite.user.id.eq(userId)
                 )
-                .fetchOne();
+                .fetchOne());
     }
 
 }

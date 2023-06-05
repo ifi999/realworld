@@ -67,11 +67,10 @@ public class FavoriteService {
         Article article = articleRepository.findBySlug(slug).orElseThrow(ArticleNotFoundException::new);
         List<Comment> commentList = getCommentList(article);
 
-        Boolean favorited = favoriteJpaRepository.isFavorited(article.getId(), currentUser.getId());
-        if (!favorited) throw new NotFoundArticleFavoriteRelationException();
-
-        Favorite favorite = favoriteJpaRepository.findByArticleAndUser(article.getId(), currentUser.getId());
+        Favorite favorite = favoriteJpaRepository.findByArticleAndUser(article.getId(), currentUser.getId())
+                .orElseThrow(() -> new NotFoundArticleFavoriteRelationException());
         favoriteRepository.delete(favorite);
+
         long favoriteCount = favoriteJpaRepository.articleFavoriteCount(article.getId());
 
         return SingleArticleDto.builder()
