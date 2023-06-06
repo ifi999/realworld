@@ -27,6 +27,8 @@ dependencies {
 	implementation "com.querydsl:querydsl-core"
 	implementation "com.querydsl:querydsl-collections"
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5' //	https://github.com/jwtk/jjwt#quickstart
+	// swagger-ui
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
 
 	compileOnly 'org.projectlombok:lombok'
 
