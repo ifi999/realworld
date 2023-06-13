@@ -6,7 +6,7 @@ import ifi.realworld.utils.exception.api.PasswordNotMatchedException;
 import ifi.realworld.utils.exception.api.UserNotFoundException;
 import ifi.realworld.utils.security.CustomUserDetailsService;
 import ifi.realworld.utils.security.jwt.JwtProvider;
-import ifi.realworld.user.api.UserPasswordEncoder;
+import ifi.realworld.utils.security.UserPasswordEncoder;
 import ifi.realworld.user.api.dto.*;
 import ifi.realworld.user.domain.User;
 import ifi.realworld.user.domain.repository.UserRepository;

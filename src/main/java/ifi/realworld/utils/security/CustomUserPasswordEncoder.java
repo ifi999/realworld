@@ -1,5 +1,6 @@
-package ifi.realworld.user.api;
+package ifi.realworld.utils.security;
 
+import ifi.realworld.utils.security.UserPasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

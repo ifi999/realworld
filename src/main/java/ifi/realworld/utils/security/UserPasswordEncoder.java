@@ -1,4 +1,4 @@
-package ifi.realworld.user.api;
+package ifi.realworld.utils.security;
 
 public interface UserPasswordEncoder {
 

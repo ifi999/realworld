@@ -1,7 +1,7 @@
 package ifi.realworld.user.domain;
 
 import ifi.realworld.utils.entity.BaseUpdateInfoEntity;
-import ifi.realworld.user.api.UserPasswordEncoder;
+import ifi.realworld.utils.security.UserPasswordEncoder;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.Assert;
