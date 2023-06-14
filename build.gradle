@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.7'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 group = 'ifi'
@@ -12,6 +13,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	asciidoctorExt
 }
 
 repositories {
@@ -42,13 +44,17 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// RestDocs
+	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
-// Querydsl 설정부
+// --- Querydsl 설정 start ---
 def generated = 'src/main/generated'
 
 // querydsl QClass 파일 생성 위치를 지정
@@ -65,3 +71,32 @@ sourceSets {
 clean {
 	delete file(generated)
 }
+// --- Querydsl 설정 end ---
+
+// --- RestDocs 설정 start ---
+ext { // 전역 변수
+	snippetsDir = file('build/generated-snippets')
+}
+
+test {
+	outputs.dir snippetsDir
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
+	configurations 'asciidoctorExt'
+
+	sources { // 특정 파일만 html로 만든다.
+		include("**/index.adoc")
+	}
+	baseDirFollowsSourceFile() // 다른 adoc 파일을 include 할 때 경로를 baseDir로 맞춘다.
+	dependsOn test
+}
+
+bootJar {
+	dependsOn asciidoctor
+	from("${asciidoctor.outputDir}") {
+		into 'static/docs'
+	}
+}
+// --- RestDocs 설정 end ---
