@@ -22,13 +22,12 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
     private UserPasswordEncoder userPasswordEncoder;
 
     @BeforeEach
     void setUp() {
-        this.userPasswordEncoder = new CustomUserPasswordEncoder(new BCryptPasswordEncoder());
-
-        User createdUser = createUser();
+        User createdUser = createUserEntity();
         userRepository.save(createdUser);
     }
 
@@ -76,7 +75,7 @@ class UserRepositoryTest {
         assertThat(user.get().getUsername()).isEqualTo(targetUsername);
     }
 
-    private User createUser() {
+    private User createUserEntity() {
         return User.builder()
                 .email("test email")
                 .password("1234")
