@@ -1,4 +1,4 @@
-package ifi.realworld.user;
+package ifi.realworld.user.app.service;
 
 import ifi.realworld.user.api.dto.*;
 import ifi.realworld.user.app.service.UserService;

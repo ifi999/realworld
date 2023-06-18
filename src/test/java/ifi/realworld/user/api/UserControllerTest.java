@@ -1,4 +1,4 @@
-package ifi.realworld.user;
+package ifi.realworld.user.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ifi.realworld.user.api.dto.UserCreateRequest;

@@ -1,14 +1,12 @@
 package ifi.realworld.user.domain.repository;
 
 import ifi.realworld.user.domain.User;
-import ifi.realworld.utils.security.CustomUserPasswordEncoder;
 import ifi.realworld.utils.security.UserPasswordEncoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
