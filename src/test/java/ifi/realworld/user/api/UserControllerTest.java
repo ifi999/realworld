@@ -1,49 +1,23 @@
 package ifi.realworld.user.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import ifi.realworld.TestSupport;
 import ifi.realworld.user.api.dto.UserCreateRequest;
 import ifi.realworld.user.api.dto.UserLoginDto;
 import ifi.realworld.user.api.dto.UserUpdateRequest;
 import ifi.realworld.user.domain.User;
-import ifi.realworld.user.domain.repository.UserRepository;
-import ifi.realworld.utils.security.UserPasswordEncoder;
-import ifi.realworld.utils.security.jwt.JwtProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Transactional
-@AutoConfigureMockMvc
-@SpringBootTest
-class UserControllerTest {
-
-    @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserPasswordEncoder userPasswordEncoder;
-
-    @Autowired
-    private JwtProvider jwtProvider;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+class UserControllerTest extends TestSupport {
 
     @BeforeEach
     void setUp() {

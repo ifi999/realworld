@@ -1,19 +1,13 @@
 package ifi.realworld.user.domain;
 
-import ifi.realworld.utils.security.UserPasswordEncoder;
+import ifi.realworld.TestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest
-class UserTest {
-
-    @Autowired
-    private UserPasswordEncoder userPasswordEncoder;
+class UserTest extends TestSupport {
 
     @DisplayName("비밀번호 검증에 성공한다.")
     @Test

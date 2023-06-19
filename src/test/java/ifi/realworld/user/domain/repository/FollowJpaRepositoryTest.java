@@ -1,25 +1,15 @@
 package ifi.realworld.user.domain.repository;
 
+import ifi.realworld.TestSupport;
 import ifi.realworld.user.domain.FollowRelation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Transactional
-@SpringBootTest
-class FollowJpaRepositoryTest {
-
-    @Autowired
-    private FollowJpaRepository followJpaRepository;
-
-    @Autowired
-    private FollowRepository followRepository;
+class FollowJpaRepositoryTest extends TestSupport {
 
     @BeforeEach
     void setUp() {

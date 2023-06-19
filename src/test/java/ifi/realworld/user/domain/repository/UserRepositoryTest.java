@@ -1,27 +1,16 @@
 package ifi.realworld.user.domain.repository;
 
+import ifi.realworld.TestSupport;
 import ifi.realworld.user.domain.User;
-import ifi.realworld.utils.security.UserPasswordEncoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Transactional
-@SpringBootTest
-class UserRepositoryTest {
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserPasswordEncoder userPasswordEncoder;
+class UserRepositoryTest extends TestSupport {
 
     @BeforeEach
     void setUp() {

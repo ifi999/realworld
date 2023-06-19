@@ -1,40 +1,24 @@
 package ifi.realworld.user.app.service;
 
+import ifi.realworld.TestSupport;
 import ifi.realworld.user.api.dto.ProfileDto;
 import ifi.realworld.user.domain.User;
-import ifi.realworld.user.domain.repository.UserRepository;
 import ifi.realworld.utils.exception.api.UserNotFoundException;
-import ifi.realworld.utils.security.CustomUserDetailsService;
-import ifi.realworld.utils.security.UserPasswordEncoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.mockito.Mockito;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@Transactional
-@SpringBootTest
-class ProfileServiceTest {
-
-    @Autowired
-    private ProfileService profileService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserPasswordEncoder userPasswordEncoder;
+class ProfileServiceTest extends TestSupport {
 
     @BeforeEach
     void setUp() {
@@ -46,6 +30,7 @@ class ProfileServiceTest {
     @AfterEach
     void tearDown() {
         userRepository.deleteAllInBatch();
+        SecurityContextHolder.clearContext();
     }
 
     @DisplayName("유저 프로필을 조회한다.")
@@ -135,10 +120,13 @@ class ProfileServiceTest {
     }
 
     private void setUserDetailService(String email) {
-        CustomUserDetailsService customUserDetailsService = new CustomUserDetailsService(userRepository);
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
-        SecurityContext context = SecurityContextHolder.getContext();
-        context.setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities()));
+        SecurityContext securityContextMock = Mockito.mock(SecurityContext.class);
+        Authentication authenticationMock = Mockito.mock(Authentication.class);
+
+        Mockito.when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+        Mockito.when(authenticationMock.getName()).thenReturn(email);
+
+        SecurityContextHolder.setContext(securityContextMock);
     }
 
     private User createUserEntity(String email, String username) {

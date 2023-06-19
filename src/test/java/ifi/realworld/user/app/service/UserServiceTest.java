@@ -1,50 +1,29 @@
 package ifi.realworld.user.app.service;
 
+import ifi.realworld.TestSupport;
 import ifi.realworld.user.api.dto.*;
-import ifi.realworld.user.app.service.UserService;
 import ifi.realworld.user.domain.User;
-import ifi.realworld.user.domain.repository.UserRepository;
 import ifi.realworld.utils.exception.api.AlreadyExistedUserException;
 import ifi.realworld.utils.exception.api.InvalidEmailException;
 import ifi.realworld.utils.exception.api.PasswordNotMatchedException;
-import ifi.realworld.utils.security.CustomUserDetailsService;
-import ifi.realworld.utils.security.UserPasswordEncoder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.mockito.Mockito;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@Transactional
-@SpringBootTest
-public class UserServiceTest {
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserPasswordEncoder userPasswordEncoder;
-
-    @MockBean
-    private MockHttpServletResponse mockHttpServletResponse;
+public class UserServiceTest extends TestSupport {
 
     @AfterEach
     void tearDown() {
         userRepository.deleteAllInBatch();
+        SecurityContextHolder.clearContext();
     }
 
     @DisplayName("신규 유저를 등록한다.")
@@ -189,10 +168,13 @@ public class UserServiceTest {
     }
 
     private void setUserDetailService(String email) {
-        CustomUserDetailsService customUserDetailsService = new CustomUserDetailsService(userRepository);
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
-        SecurityContext context = SecurityContextHolder.getContext();
-        context.setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities()));
+        SecurityContext securityContextMock = Mockito.mock(SecurityContext.class);
+        Authentication authenticationMock = Mockito.mock(Authentication.class);
+
+        Mockito.when(securityContextMock.getAuthentication()).thenReturn(authenticationMock);
+        Mockito.when(authenticationMock.getName()).thenReturn(email);
+
+        SecurityContextHolder.setContext(securityContextMock);
     }
 
 }
