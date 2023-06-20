@@ -1,6 +1,7 @@
 package ifi.realworld;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ifi.realworld.tag.domain.repository.TagRepository;
 import ifi.realworld.user.app.service.ProfileService;
 import ifi.realworld.user.app.service.UserService;
 import ifi.realworld.user.domain.repository.FollowJpaRepository;
@@ -38,6 +39,9 @@ public abstract class TestSupport {
 
     @Autowired
     protected ProfileService profileService;
+
+    @Autowired
+    protected TagRepository tagRepository;
 
     @Autowired
     protected JwtProvider jwtProvider;
