@@ -19,7 +19,7 @@ public class NotFoundArticleFavoriteRelationException extends DefaultCustomExcep
     }
 
     public NotFoundArticleFavoriteRelationException() {
-        super();
+        super("Not found this article's favorite relation.");
     }
 
     public NotFoundArticleFavoriteRelationException(String message) {
