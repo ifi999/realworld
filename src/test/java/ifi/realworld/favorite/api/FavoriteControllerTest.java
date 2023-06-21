@@ -37,7 +37,7 @@ class FavoriteControllerTest extends TestSupport {
         articleRepository.save(article);
     }
 
-    @WithMockUser(username = "test email", roles = "USER", password = "1234")
+    @WithMockUser(username = "test email")
     @DisplayName("게시글에 좋아요를 한다.")
     @Test
     public void favoriteArticle() throws Exception {
@@ -56,7 +56,7 @@ class FavoriteControllerTest extends TestSupport {
         .andExpect(jsonPath("$.description").value(article.getDescription()));
     }
 
-    @WithMockUser(username = "test email", roles = "USER", password = "1234")
+    @WithMockUser
     @DisplayName("게시글에 좋아요한 것을 취소한다.")
     @Test
     public void unFavoriteArticle() throws Exception {

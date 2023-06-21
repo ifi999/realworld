@@ -79,7 +79,7 @@ class UserControllerTest extends TestSupport {
         ).andExpect(status().is(401));
     }
 
-    @WithMockUser(username = "test email", roles = "USER", password = "1234")
+    @WithMockUser
     @DisplayName("유저 정보를 가져온다.")
     @Test
     public void getCurrentUserIsOk() throws Exception {
@@ -101,7 +101,7 @@ class UserControllerTest extends TestSupport {
         ).andExpect(status().is(401));
     }
 
-    @WithMockUser(username = "test email", roles = "USER", password = "1234")
+    @WithMockUser
     @DisplayName("유저 정보를 변경한다.")
     @Test
     public void changeUserInfoIsOk() throws Exception {
