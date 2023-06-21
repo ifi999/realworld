@@ -1,6 +1,9 @@
 package ifi.realworld;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ifi.realworld.article.domain.repository.ArticleRepository;
+import ifi.realworld.favorite.app.service.FavoriteService;
+import ifi.realworld.favorite.domain.repository.FavoriteRepository;
 import ifi.realworld.tag.domain.repository.TagRepository;
 import ifi.realworld.user.app.service.ProfileService;
 import ifi.realworld.user.app.service.UserService;
@@ -42,6 +45,15 @@ public abstract class TestSupport {
 
     @Autowired
     protected TagRepository tagRepository;
+
+    @Autowired
+    protected FavoriteRepository favoriteRepository;
+
+    @Autowired
+    protected ArticleRepository articleRepository;
+
+    @Autowired
+    protected FavoriteService favoriteService;
 
     @Autowired
     protected JwtProvider jwtProvider;
