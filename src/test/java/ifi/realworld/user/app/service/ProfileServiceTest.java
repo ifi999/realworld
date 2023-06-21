@@ -25,6 +25,8 @@ class ProfileServiceTest extends TestSupport {
         User existedUser1 = createUserEntity("test1", "테스트1");
         User existedUser2 = createUserEntity("test2", "테스트2");
         userRepository.saveAll(List.of(existedUser1, existedUser2));
+
+        setUserDetailService("test1");
     }
 
     @AfterEach
@@ -37,7 +39,6 @@ class ProfileServiceTest extends TestSupport {
     @Test
     public void getProfile() {
         // given
-        setUserDetailService("test1");
         String targetUsername = "테스트2";
 
         // when
@@ -52,7 +53,6 @@ class ProfileServiceTest extends TestSupport {
     @Test
     public void getProfileWithNotExistedUser() {
         // given
-        setUserDetailService("test1");
         String targetUsername = "테스트3";
 
         // then
@@ -65,7 +65,6 @@ class ProfileServiceTest extends TestSupport {
     @Test
     public void followUser() {
         // given
-        setUserDetailService("test1");
         String targetUsername = "테스트2";
 
         // when
@@ -81,7 +80,6 @@ class ProfileServiceTest extends TestSupport {
     @Test
     public void followUserWithNotExistedUser() {
         // given
-        setUserDetailService("test1");
         String targetUsername = "테스트3";
 
         // then
@@ -94,7 +92,6 @@ class ProfileServiceTest extends TestSupport {
     @Test
     public void unFollowUser() {
         // given
-        setUserDetailService("test1");
         String targetUsername = "테스트2";
 
         // when
@@ -110,7 +107,6 @@ class ProfileServiceTest extends TestSupport {
     @Test
     public void unFollowUserWithNotExistedUser() {
         // given
-        setUserDetailService("test1");
         String targetUsername = "테스트3";
 
         // then
