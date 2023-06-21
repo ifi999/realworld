@@ -19,7 +19,7 @@ public class ArticleNotFoundException extends DefaultCustomException {
     }
 
     public ArticleNotFoundException() {
-        super();
+        super("Not found this article.");
     }
 
     public ArticleNotFoundException(String message) {
