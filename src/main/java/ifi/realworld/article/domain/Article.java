@@ -48,22 +48,22 @@ public class Article extends BaseUpdateInfoEntity {
     @Builder
     public Article(String title, String description, String body, User author) {
         this.title = title;
-        this.slug = setSlug(title);
+        this.slug = setSlug();
         this.description = description;
         this.body = body;
         this.author = author;
     }
 
-    public String setSlug(String title) {
+    public String setSlug() {
         UUID uuid = UUID.randomUUID();
-        String[] titleSplit = title.split(" ");
+        String[] titleSplit = this.title.split(" ");
         if (titleSplit.length > 1) return titleSplit[0] + "-" + titleSplit[1] + "_" + uuid;
         else return titleSplit[0] + "_" + uuid;
     }
 
     public void editArticle(String title, String description, String body) {
         this.title = title;
-        this.slug = setSlug(title);
+        this.slug = setSlug();
         this.description = description;
         this.body = body;
     }
