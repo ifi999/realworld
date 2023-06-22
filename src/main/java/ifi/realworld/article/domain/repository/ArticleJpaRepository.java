@@ -76,8 +76,8 @@ public class ArticleJpaRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
-    private BooleanExpression authorEq(String authorName) {
-        return StringUtils.hasText(authorName) ? article.author.username.eq(authorName) : null;
+    private BooleanExpression authorEq(String author) {
+        return StringUtils.hasText(author) ? article.author.email.eq(author) : null;
     }
 
     private BooleanExpression tagEq(String tagName) {
