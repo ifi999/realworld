@@ -2,6 +2,7 @@ package ifi.realworld;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ifi.realworld.article.app.service.ArticleService;
+import ifi.realworld.article.domain.repository.ArticleJpaRepository;
 import ifi.realworld.article.domain.repository.ArticleRepository;
 import ifi.realworld.comment.app.service.CommentService;
 import ifi.realworld.comment.domain.repository.CommentRepository;
@@ -70,6 +71,9 @@ public abstract class TestSupport {
 
     @Autowired
     protected CommentRepository commentRepository;
+
+    @Autowired
+    protected ArticleJpaRepository articleJpaRepository;
 
     @Autowired
     protected JwtProvider jwtProvider;
