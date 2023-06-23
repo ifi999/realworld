@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ifi.realworld.article.app.service.ArticleService;
 import ifi.realworld.article.domain.repository.ArticleJpaRepository;
 import ifi.realworld.article.domain.repository.ArticleRepository;
+import ifi.realworld.article.domain.repository.ArticleTagJpaRepository;
+import ifi.realworld.article.domain.repository.ArticleTagRepository;
 import ifi.realworld.comment.app.service.CommentService;
 import ifi.realworld.comment.domain.repository.CommentRepository;
 import ifi.realworld.favorite.app.service.FavoriteService;
@@ -74,6 +76,12 @@ public abstract class TestSupport {
 
     @Autowired
     protected ArticleJpaRepository articleJpaRepository;
+
+    @Autowired
+    protected ArticleTagRepository articleTagRepository;
+
+    @Autowired
+    protected ArticleTagJpaRepository articleTagJpaRepository;
 
     @Autowired
     protected JwtProvider jwtProvider;
