@@ -6,6 +6,7 @@ import ifi.realworld.utils.security.UserPasswordEncoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
@@ -27,6 +28,7 @@ public abstract class RestCodsSupport {
     void setUp(RestDocumentationContextProvider provider) {
         this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
+                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .build();
     }
 
