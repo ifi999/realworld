@@ -9,7 +9,11 @@ endif::[]
 :toclevels: 2
 :sectlinks:
 
-// [[Article-API]]
-// == Article API
-//
-// include::api/article/article.adoc[]
+[[Article-API]]
+== Article API
+
+include::api/article/create-article.adoc[]
+include::api/article/get-article.adoc[]
+include::api/article/get-articles.adoc[]
+include::api/article/change-article-info.adoc[]
+include::api/article/delete-article.adoc[]

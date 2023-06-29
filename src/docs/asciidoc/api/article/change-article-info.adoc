@@ -1,0 +1,10 @@
+[[change-article-info]]
+=== 게시글 수정
+
+==== HTTP Request
+include::{snippets}/change-article-info/http-request.adoc[]
+include::{snippets}/change-article-info/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/change-article-info/http-response.adoc[]
+include::{snippets}/change-article-info/response-fields.adoc[]

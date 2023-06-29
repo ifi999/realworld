@@ -1,0 +1,10 @@
+[[create-article]]
+=== 게시글 목록 조회
+
+==== HTTP Request
+include::{snippets}/get-articles/http-request.adoc[]
+include::{snippets}/get-articles/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/get-articles/http-response.adoc[]
+include::{snippets}/get-articles/response-fields.adoc[]

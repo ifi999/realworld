@@ -1,0 +1,10 @@
+[[create-article]]
+=== 신규 게시글 등록
+
+==== HTTP Request
+include::{snippets}/create-article/http-request.adoc[]
+include::{snippets}/create-article/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/create-article/http-response.adoc[]
+include::{snippets}/create-article/response-fields.adoc[]

@@ -1,0 +1,8 @@
+[[delete-article]]
+=== 게시글 삭제
+
+==== HTTP Request
+include::{snippets}/delete-article/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/delete-article/http-response.adoc[]
