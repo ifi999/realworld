@@ -1,0 +1,8 @@
+[[delete-comments]]
+=== 게시글 코멘트 삭제
+
+==== HTTP Request
+include::{snippets}/delete-comments/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/delete-comments/http-response.adoc[]

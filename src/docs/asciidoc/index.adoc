@@ -17,3 +17,10 @@ include::api/article/get-article.adoc[]
 include::api/article/get-articles.adoc[]
 include::api/article/change-article-info.adoc[]
 include::api/article/delete-article.adoc[]
+
+[[Comment-API]]
+== Comment API
+
+include::api/comment/create-comments.adoc[]
+include::api/comment/get-comments.adoc[]
+include::api/comment/delete-comments.adoc[]
