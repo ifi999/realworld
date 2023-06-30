@@ -7,9 +7,8 @@ import ifi.realworld.comment.api.dto.CommentResponseDto;
 import ifi.realworld.comment.app.service.CommentService;
 import ifi.realworld.comment.domain.Comment;
 import ifi.realworld.comment.domain.repository.CommentRepository;
-import ifi.realworld.docs.RestCodsSupport;
+import ifi.realworld.docs.RestDocsSupport;
 import ifi.realworld.user.domain.User;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -32,7 +31,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class CommentControllerDocsTest extends RestCodsSupport {
+class CommentControllerDocsTest extends RestDocsSupport {
 
     private final CommentRepository commentRepository = Mockito.mock(CommentRepository.class);
 

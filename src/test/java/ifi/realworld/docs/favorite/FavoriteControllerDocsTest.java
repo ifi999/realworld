@@ -3,7 +3,7 @@ package ifi.realworld.docs.favorite;
 import ifi.realworld.article.api.dto.SingleArticleDto;
 import ifi.realworld.article.domain.Article;
 import ifi.realworld.article.domain.repository.ArticleRepository;
-import ifi.realworld.docs.RestCodsSupport;
+import ifi.realworld.docs.RestDocsSupport;
 import ifi.realworld.favorite.api.FavoriteController;
 import ifi.realworld.favorite.app.service.FavoriteService;
 import ifi.realworld.user.domain.User;
@@ -28,7 +28,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class FavoriteControllerDocsTest extends RestCodsSupport {
+class FavoriteControllerDocsTest extends RestDocsSupport {
 
     private final ArticleRepository articleRepository = Mockito.mock(ArticleRepository.class);
 

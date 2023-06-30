@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @ExtendWith(RestDocumentationExtension.class)
-public abstract class RestCodsSupport {
+public abstract class RestDocsSupport {
 
     protected MockMvc mockMvc;
 

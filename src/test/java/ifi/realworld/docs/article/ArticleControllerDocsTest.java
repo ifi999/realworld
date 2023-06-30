@@ -8,9 +8,8 @@ import ifi.realworld.article.api.dto.SingleArticleDto;
 import ifi.realworld.article.app.service.ArticleService;
 import ifi.realworld.article.domain.Article;
 import ifi.realworld.article.domain.repository.ArticleRepository;
-import ifi.realworld.docs.RestCodsSupport;
+import ifi.realworld.docs.RestDocsSupport;
 import ifi.realworld.user.domain.User;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -34,7 +33,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class ArticleControllerDocsTest extends RestCodsSupport {
+class ArticleControllerDocsTest extends RestDocsSupport {
 
     private final ArticleService articleService = Mockito.mock(ArticleService.class);
 
