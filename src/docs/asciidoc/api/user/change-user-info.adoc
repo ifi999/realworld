@@ -1,0 +1,10 @@
+[[change-user-info]]
+=== 유저 정보 수정
+
+==== HTTP Request
+include::{snippets}/change-user-info/http-request.adoc[]
+include::{snippets}/change-user-info/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/change-user-info/http-response.adoc[]
+include::{snippets}/change-user-info/response-fields.adoc[]

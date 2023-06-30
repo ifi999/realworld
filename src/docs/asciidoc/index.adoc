@@ -36,3 +36,11 @@ include::api/favorite/unfavorite-article.adoc[]
 
 include::api/tag/get-tags.adoc[]
 
+[[User-API]]
+== User API
+
+include::api/user/create-user.adoc[]
+include::api/user/login.adoc[]
+include::api/user/get-current-user.adoc[]
+include::api/user/change-user-info.adoc[]
+

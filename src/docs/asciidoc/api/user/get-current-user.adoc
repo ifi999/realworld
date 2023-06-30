@@ -1,0 +1,9 @@
+[[get-current-user]]
+=== 유저 정보 조회
+
+==== HTTP Request
+include::{snippets}/get-current-user/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/get-current-user/http-response.adoc[]
+include::{snippets}/get-current-user/response-fields.adoc[]
