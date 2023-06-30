@@ -30,3 +30,9 @@ include::api/comment/delete-comments.adoc[]
 
 include::api/favorite/favorite-article.adoc[]
 include::api/favorite/unfavorite-article.adoc[]
+
+[[Tag-API]]
+== Tag API
+
+include::api/tag/get-tags.adoc[]
+
