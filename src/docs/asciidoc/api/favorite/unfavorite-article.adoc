@@ -1,0 +1,9 @@
+[[unfavorite-article]]
+=== 게시글 좋아요 취소
+
+==== HTTP Request
+include::{snippets}/un-favorite-article/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/un-favorite-article/http-response.adoc[]
+include::{snippets}/un-favorite-article/response-fields.adoc[]

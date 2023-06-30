@@ -24,3 +24,9 @@ include::api/article/delete-article.adoc[]
 include::api/comment/create-comments.adoc[]
 include::api/comment/get-comments.adoc[]
 include::api/comment/delete-comments.adoc[]
+
+[[Favorite-API]]
+== Favorite API
+
+include::api/favorite/favorite-article.adoc[]
+include::api/favorite/unfavorite-article.adoc[]
