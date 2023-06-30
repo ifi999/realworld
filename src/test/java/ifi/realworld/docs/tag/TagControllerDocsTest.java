@@ -42,7 +42,7 @@ class TagControllerDocsTest extends RestDocsSupport {
     private final Tag tag2 = new Tag("tag2");
     private final Tag tag3 = new Tag("tag3");
 
-    @DisplayName("태그 목록을 조회한다.")
+    @DisplayName("태그 목록 조회 API")
     @Test
     public void getTags() throws Exception {
         // then
