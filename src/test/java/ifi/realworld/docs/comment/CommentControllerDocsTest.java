@@ -43,24 +43,19 @@ class CommentControllerDocsTest extends RestCodsSupport {
         return new CommentController(commentService);
     }
 
-    private Article article;
+    private final User user = User.builder()
+            .email("test email")
+            .username("테스트")
+            .password("1234")
+            .passwordEncoder(userPasswordEncoder)
+            .build();
 
-    @BeforeEach
-    void setUp() {
-        User user = User.builder()
-                .email("test email")
-                .username("테스트")
-                .password("1234")
-                .passwordEncoder(userPasswordEncoder)
-                .build();
-
-        article = Article.builder()
-                .title("test title")
-                .author(user)
-                .body("test body")
-                .description("test desc")
-                .build();
-    }
+    private final Article article = Article.builder()
+            .title("test title")
+            .author(user)
+            .body("test body")
+            .description("test desc")
+            .build();
 
     @DisplayName("게시글 코멘트 작성 API")
     @Test

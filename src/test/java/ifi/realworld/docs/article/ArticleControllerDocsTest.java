@@ -45,18 +45,12 @@ class ArticleControllerDocsTest extends RestCodsSupport {
         return new ArticleController(articleService);
     }
 
-    User user;
-
-    @BeforeEach
-    void setUp() {
-        user = User.builder()
-                .email("test email")
-                .username("테스트")
-                .password("1234")
-                .passwordEncoder(userPasswordEncoder)
-                .build();
-        userRepository.save(user);
-    }
+    private final User user = User.builder()
+            .email("test email")
+            .username("테스트")
+            .password("1234")
+            .passwordEncoder(userPasswordEncoder)
+            .build();
 
     @DisplayName("게시글 작성 API")
     @Test
